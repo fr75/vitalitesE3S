@@ -24,19 +24,56 @@
   opacity: 1; /* Fully shown on mouse-over */
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+/* Le doigt du curseur ( -webkit- (Chrome, Opera, Safari, Edge) et -moz- (Firefox) ) */
 .curseurTemps::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 40px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer; /* Style */
 }
 
 .curseurTemps::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #4CAF50; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 60px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.marqueurTemps {
+    box-shadow: 0 0 0 0.1em inset;
+}
+.marqueurTemps {
+	right: 0;
+	text-align: center;
+	width: 5%; // Surchargé dans le javascript
+	height: 1.5em;
+    background-color: #fae79b;
+    zzleft: 100;
+}
+
+.moyenneVitalitesContainer {
+    width: 100%;
+    background-color: #c6e9b3;
+}
+
+.moyenneVitalitesContainer p {
+    display: inline-block;
+    width: 20%;
+    height: 20px;
+    background-color: #ffe9b3;
+    border: 0px solid red;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left:  0px;
+    margin-right: 0px;
+}
+
+.moyenneVitalitesContainer p:hover {
+    content: "Coucou";
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 50px;
+    background-color: red;
 }

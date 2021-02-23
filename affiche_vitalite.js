@@ -1,6 +1,8 @@
 // Le curseur de temps prend des valeurs de 0 à G_maxCurseur
 G_maxCurseur = 100;
 
+
+
 // Dans cet objet on stocke pour chaque heure les vitalités des zones
 G_heuresV = []
 
@@ -175,15 +177,28 @@ function rechercheHeure(heuresV, heure) {
     return (false);
 }
 // Convertit une heure exprimée en un int hhmm en minutes
-function ConvHeureVersMn(hm) {
+function convHeureVersMn(hm) {
     return (Math.floor(hm / 100) * 60 + hm - Math.floor(hm / 100) * 100);
 }
 
 // Convertit des minutes en un int hhmm
-function ConvMnVersHeure(mn) {
+function convMnVersHeure(mn) {
     h = Math.floor(mn / 60);
     m = mn - h * 60;
     return (h * 100 + m);
+}
+
+// Ajoute des zéros à gauche à un nombre sous forme de chaîne
+// num est un entier
+function formateNombre(num, nbDigts) {
+     return (String(num).padStart(nbDigts, '0'))
+}
+
+// Convertit une heure exprimée en un int hhmm en minutes en une chaine
+function convHeureVersCh(hm) {
+    h = Math.floor(hm / 100);
+    m = hm - h * 100;
+    return(h + 'H' + formateNombre(m, 2));
 }
 
 
@@ -260,18 +275,24 @@ remplitTabHeuresChangementsVitalite(G_heuresV);
 
 // Met à jour l'affichage des vitalités en fonction de la position du curseur de temps
 function curseurTempsMiseAJourVitalites(){
+    var largMarqeurTemps = 5; //en %
     var valCurseur = curseurTemps.value;
-    mnMin = ConvHeureVersMn(G_heuresV[0]['heure']['h']);
-    mnMax = ConvHeureVersMn(G_heuresV[G_heuresV.length - 1]['heure']['h']);
+
+    posMarqueur = Math.floor(((100 - largMarqeurTemps)/ G_maxCurseur) * valCurseur) + "%";
+    marqueurTemps.style.width = largMarqeurTemps + "%";
+    marqueurTemps.style.marginLeft = posMarqueur;
+    mnMin = convHeureVersMn(G_heuresV[0]['heure']['h']);
+    mnMax = convHeureVersMn(G_heuresV[G_heuresV.length - 1]['heure']['h']);
     mn = Math.floor(mnMin +  ((mnMax - mnMin)/G_maxCurseur) * valCurseur);
     console.log("mnMin = " +  mnMin);
-    hm = ConvMnVersHeure(mn);
+    hm = convMnVersHeure(mn);
     console.log("Curseur : " + valCurseur + ", minutes = " + mn + ", heures = " + hm);
     // Les valeurs de vitalités :
     vitalites = retVitalite(G_heuresV, hm);
     if (vitalites != false) {
         miseAJourAffichageVitalites(vitalites);
     }
+    marqueurTemps.textContent = convHeureVersCh(hm);
 }
 
 // h = retVitalite(G_heuresV, 1049);
@@ -281,6 +302,46 @@ function curseurTempsMiseAJourVitalites(){
 //     miseAJourAffichageVitalites(h);
 // }
 
+// Retourne la valeur moyennes des vitalités pour une heure
+// Argument : objet heure, issu de G_heuresV
+function calculeMoyenneVitalites(structHeure) {
+    var vitalite = 0;
+    var k = Object.keys(structHeure['zones']);
+    var nbZones = 0;
+    k.forEach(
+        function (z) {
+            nbZones += 1;
+            vitalite += structHeure['zones'][z];
+        }
+    )
+    //var nbZones = k.length;
+    console.log("nbZones = " + nbZones);
+    var vitaliteMoy = vitalite / nbZones;
+    if (vitaliteMoy > 1) {
+        console.log("!!! ERREUR vitalité moyenne > 1 : " + vitaliteMoy +  ", pour l'heure " + structHeure['h']);
+        return 0;
+    }
+    return (vitaliteMoy);
+}
+
+
+function ajouteLigneVitalitesMoyennes(tabHeures) {
+    nbElts = tabHeures.length
+    for(var i = 0; i < nbElts; i++) {
+        var structHeure = tabHeures[i]['heure'];
+        var vitalite = calculeMoyenneVitalites(structHeure);
+        //var vitalite = i / nbElts; //Pour tester
+        var moyenneVitalitesContainer = document.getElementById("moyenneVitalitesContainer");
+        var balise = document.createElement("p");
+        //var texte = document.createTextNode(i);
+        //balise.appendChild(texte);
+        // Modification de la largeur de l'élement
+        balise.style.width = (100 / nbElts) + "%";
+        balise.style.backgroundColor = heatMapColorforValue(vitalite);
+        // Ajout du nouvel élément
+        moyenneVitalitesContainer.appendChild(balise);
+    }
+}
 
 
 
@@ -290,10 +351,12 @@ console.log("curseurTemps ");
 console.log(curseurTemps.min);
 
 // Initialisations
+marqueurTemps = document.getElementById("marqueurTemps");
+
 curseurTemps.max = G_maxCurseur;
 curseurTempsMiseAJourVitalites();
 
-
+ajouteLigneVitalitesMoyennes(G_heuresV);
 
 
 

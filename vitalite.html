@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+
+<head>
+    <link rel="stylesheet" href="vitalite.css" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Description" content="Projet E3S, indice de vitalité du quartier LA VALLÉE" />
+    <meta name="Author" content="Francis Dupin" />
+    <title>Projet E3S, indice de vitalité du quartier LA VALLÉE</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="zones.geojson"></script>
+    <script src="vitalite.json"></script>
+
+
+</head>
+
+
+<body>
+    <div id="mapid">
+
+    </div>
+
+
+
+    <div class="curseurTempsContainer">
+        <input type="range" min="0" max="100" value="50" class="curseurTemps" id="curseurTemps">
+        </br>
+        <span> Valeur : </span>
+        <span id="f"> V </span>
+
+    </div>
+
+<script src="affiche_vitalite.js"></script>
+
+</html>

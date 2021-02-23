@@ -1,0 +1,15 @@
+Francis Dupin, février 2021
+
+Pour générer les fichiers vitalite.json et zones.geojson :
+
+# Générateur aléatoire de vitalités sur chaque zone pour une plage horaire. Modifier dans le script les zones, la plage, la résolution.
+python3 generateur_vitalites.py
+
+# Crée zones.geojson à partir de zones.txt
+# Nota : format geojson pas tout à fait respecté car la dernière coord du polygone n'est pas identique à la première
+python3 zones.geojson
+
+Tester le script (nécessite connexion internet) :
+firefox vitalite.html
+
+

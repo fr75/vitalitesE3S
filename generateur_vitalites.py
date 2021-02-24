@@ -12,7 +12,11 @@ import json
 import numpy as np
 import random as rd
 
-ZONES = {'Lot H', 'Lot G', 'Lot E', 'Lot F', 'Lot M', 'Lot K', 'Lot A', 'Groupe Scolaire GS', 'Lot R', 'Lot T', 'Lot P' }
+ZONES = {
+    'Polygon_1', 'Polygon_2', 'Polygon_3', 'Polygon_4', 'Polygon_5', 'Polygon_6', 'Polygon_7', 'Polygon_8',
+    'Polygon_9', 'Polygon_10', 'Polygon_11', 'Polygon_12', 'Polygon_13', 'Polygon_14', 'Polygon_15', 'Polygon_16',
+    'Polygon_17', 'Polygon_18', 'Polygon_19'
+}
 
 class Zone:
     def __init__(self, nom, heure, vitalite):

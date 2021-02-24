@@ -188,20 +188,25 @@ function convMnVersHeure(mn) {
     return (h * 100 + m);
 }
 
-// Ajoute des zéros à gauche à un nombre sous forme de chaîne
+
+
+// Ajoute des zéros à gauche à un nombre sous forme de chaîne,
+// pour qu'il soit représenté par nbDigits chiffres
 // num est un entier
 function formateNombre(num, nbDigts) {
      return (String(num).padStart(nbDigts, '0'))
 }
 
-// Convertit une heure exprimée en un int hhmm en minutes en une chaine
+// Convertit une heure exprimée en un int hhmm en une chaine
 function convHeureVersCh(hm) {
     h = Math.floor(hm / 100);
     m = hm - h * 100;
     return(h + 'H' + formateNombre(m, 2));
 }
 
-
+// Remplit l'objet G_heuresV à partir des données d'entrées de vitalités
+// Pour chaque heure, il faut que toutes les zones soient présentes dans les données d'entrées,
+// ce qui est naturellement le cas.
 function remplitTabHeuresChangementsVitalite(tabHeures) {
     vitalites.vitalites.forEach(
         function(v) {
@@ -236,7 +241,7 @@ function retVitalite(tabHeures, heure) {
         h = tabHeures[i]['heure']['h']
         // console.log("i = " + i + ", heure = " + h);
         if ( i == 0 && heure < h) {
-            console.log("!! ERREUR Recherche vitalités d'une heure en dessous de l'heure de début : " + heure)
+            console.log("!! ERREUR Recherche vitalités pour une heure qui est en dessous de l'heure de début : " + heure)
             return false;
         }
         if (heure > h) {
@@ -302,7 +307,7 @@ function curseurTempsMiseAJourVitalites(){
 //     miseAJourAffichageVitalites(h);
 // }
 
-// Retourne la valeur moyennes des vitalités pour une heure
+// Retourne la valeur moyenne des vitalités pour une heure
 // Argument : objet heure, issu de G_heuresV
 function calculeMoyenneVitalites(structHeure) {
     var vitalite = 0;
@@ -344,6 +349,62 @@ function ajouteLigneVitalitesMoyennes(tabHeures) {
 }
 
 
+function ajouteGraduationsTemps(tabHeures) {
+    mnMin = convHeureVersMn(tabHeures[0]['heure']['h']);
+    mnMax = convHeureVersMn(tabHeures[tabHeures.length - 1]['heure']['h']);
+    console.log("mnMin = " + mnMin + ", mnMax = " + mnMax);
+    // Objet donnant la position des graduations d'heure de demi-heure
+    var grad = [];
+    var t = mnMin;
+    for(var i = 0; i < tabHeures.length; i++) {
+        var position = i * 100 /(mnMax - mnMin); // Position pour une largeur de 100
+        if (Math.floor(t/60) == t/60) {
+            var h = {'heure': {'label': t/60 + 'h', 'position': position}};
+            console.log('grad heure pour t = ' + t + ", position : " + position);
+            grad.push(h);
+        }
+        else if (Math.floor(t/30) == t/30) {
+            var dmh = {'demiHeure': {'label': '', 'position': position}};
+            grad.push(dmh);
+        }
+        t += 1;
+    }
+    console.log("Nbr de graduations temps : " + grad.length);
+    console.log(grad);
+    // Création des objets htmlgraduationsTempsContainer
+    var graduationsTempsContainer = document.getElementById("graduationsTempsContainer");
+    //for(var v of grad) {
+    for(var i = 0 ; i < grad.length ; i++){
+        var v = grad[i];
+        console.log(v);
+        if (v['heure'] != undefined) {
+            var baliseP = document.createElement("p");
+            baliseP.className = "heure";
+            baliseP.style.left = v['heure']['position'] + '%';
+            //baliseP.style.position = "relative";
+            var baliseSpan = document.createElement("span");
+            var label = document.createTextNode(v['heure']['label']);
+            //var label = document.createTextNode('x');
+            baliseSpan.appendChild(label);
+            baliseP.appendChild(baliseSpan);
+            graduationsTempsContainer.appendChild(baliseP);
+        }
+        if (v['demiHeure'] != undefined) {
+            var baliseP = document.createElement("p");
+            baliseP.className = "demiHeure";
+            baliseP.style.left = v['demiHeure']['position'] + '%';
+            //baliseP.style.position = "relative";
+            var baliseSpan = document.createElement("span");
+            var label = document.createTextNode(v['demiHeure']['label']);
+            //var label = document.createTextNode('x');
+            baliseSpan.appendChild(label);
+            //baliseP.appendChild(baliseSpan);
+            graduationsTempsContainer.appendChild(baliseP);
+        }
+
+    }
+}
+
 
 var curseurTemps = document.getElementById("curseurTemps");
 
@@ -359,7 +420,7 @@ curseurTempsMiseAJourVitalites();
 ajouteLigneVitalitesMoyennes(G_heuresV);
 
 
-
+ajouteGraduationsTemps(G_heuresV);
 
 
 // Evénement déplacement curseur de temps

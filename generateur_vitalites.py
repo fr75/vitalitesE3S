@@ -13,6 +13,7 @@ import numpy as np
 import random as rd
 
 ZONES = {
+    'Polygon_0',
     'Polygon_1', 'Polygon_2', 'Polygon_3', 'Polygon_4', 'Polygon_5', 'Polygon_6', 'Polygon_7', 'Polygon_8',
     'Polygon_9', 'Polygon_10', 'Polygon_11', 'Polygon_12', 'Polygon_13', 'Polygon_14', 'Polygon_15', 'Polygon_16',
     'Polygon_17', 'Polygon_18', 'Polygon_19'
@@ -59,7 +60,8 @@ class Heures:
 
 ficCible = "vitalite.json"
 
-str = Heures(820, 1100, 1).retJson()
+# Début : pour 6h10, entrer 610
+str = Heures(debut = 500, fin = 2300, pasMinutes = 10).retJson()
 
 print(str)
 

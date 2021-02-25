@@ -1,11 +1,6 @@
-// Le curseur de temps prend des valeurs de 0 à G_maxCurseur
-G_maxCurseur = 100;
 
-
-
-// Dans cet objet on stocke pour chaque heure les vitalités des zones
-G_heuresV = []
-
+// Francis Dupin
+// février 2021
 
 
 
@@ -14,7 +9,8 @@ G_heuresV = []
 // console.log(zones.features[0].properties['nom']);
 // console.log(zones.features[0].geometry.coordinates[0][1]);
 
-// Malheureusement geojson code les coord en lon,lat dans cet ordre, et leaflet les utilse ne lat,lon
+// ------------------------------------------------------
+// Malheureusement geojson code les coord en lon,lat dans cet ordre, et leaflet les utilse en lat,lon
 function inverseLatLon(zones)
 {
     zones.features.forEach(
@@ -30,6 +26,7 @@ function inverseLatLon(zones)
     )
 }
 
+// ------------------------------------------------------
 function hslToHex(h, s, l) {
     h /= 360;
     s /= 100;
@@ -60,6 +57,7 @@ function hslToHex(h, s, l) {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 } // function hslToHex
 
+// ------------------------------------------------------
 // Retourne une couleur en fonction d'un indice de chaleur entre 0 et 1
 function heatMapColorforValue(value){
     var h = (1.0 - value) * 240
@@ -68,20 +66,13 @@ function heatMapColorforValue(value){
     return hslToHex(h, s, l);
 }
 
+// ------------------------------------------------------
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-var mymap = L.map('mapid').setView([48.7640, 2.2884], 17);
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox/streets-v11',
-		tileSize: 512,
-		zoomOffset: -1
-	}).addTo(mymap);
+
 
 	// L.marker([51.5, -0.09]).addTo(mymap);
 //
@@ -124,21 +115,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 
 // Crée les objets leaflet polygones
-inverseLatLon(zones);
-lzones = new Map();
 
-zones.features.forEach(
-    function(zone) {
-        lzone = new Map();
-        nom = zone.properties['nom']; // Nom de la zone
-        lzone.set('nom', nom);
-        lzone.set('lp', L.polygon(zone.geometry.coordinates[0]));
-        lzone.get('lp').bindTooltip("Zone : " + nom)
-        lzone.get('lp').addTo(mymap);
-        lzones.set(nom, lzone);
-
-    }
-)
 
 // // On fait varier la couleur
 // async function testeCouleurs() {
@@ -163,7 +140,7 @@ zones.features.forEach(
 // testeCouleurs();
 
 
-
+// ------------------------------------------------------
 // Retourne la structure heure si trouvée, false sinon
 function rechercheHeure(heuresV, heure) {
     for(var i = 0; i < heuresV.length; i++) {
@@ -176,20 +153,23 @@ function rechercheHeure(heuresV, heure) {
     }
     return (false);
 }
+
+// ------------------------------------------------------
 // Convertit une heure exprimée en un int hhmm en minutes
 function convHeureVersMn(hm) {
     return (Math.floor(hm / 100) * 60 + hm - Math.floor(hm / 100) * 100);
 }
 
+// ------------------------------------------------------
 // Convertit des minutes en un int hhmm
 function convMnVersHeure(mn) {
-    h = Math.floor(mn / 60);
-    m = mn - h * 60;
+    var h = Math.floor(mn / 60);
+    var m = mn - h * 60;
     return (h * 100 + m);
 }
 
 
-
+// ------------------------------------------------------
 // Ajoute des zéros à gauche à un nombre sous forme de chaîne,
 // pour qu'il soit représenté par nbDigits chiffres
 // num est un entier
@@ -197,13 +177,15 @@ function formateNombre(num, nbDigts) {
      return (String(num).padStart(nbDigts, '0'))
 }
 
+// ------------------------------------------------------
 // Convertit une heure exprimée en un int hhmm en une chaine
 function convHeureVersCh(hm) {
-    h = Math.floor(hm / 100);
-    m = hm - h * 100;
+    var h = Math.floor(hm / 100);
+    var m = hm - h * 100;
     return(h + 'H' + formateNombre(m, 2));
 }
 
+// ------------------------------------------------------
 // Remplit l'objet G_heuresV à partir des données d'entrées de vitalités
 // Pour chaque heure, il faut que toutes les zones soient présentes dans les données d'entrées,
 // ce qui est naturellement le cas.
@@ -232,13 +214,15 @@ function remplitTabHeuresChangementsVitalite(tabHeures) {
     )
 }
 
+
+// ------------------------------------------------------
 // Retourne les valeurs de vitalités
 // Argument :l'heure du curseur en format entier : hhmm
 // return false si erreur
 function retVitalite(tabHeures, heure) {
-    heurePrec = 0
+    var heurePrec = 0
     for(var i = 0; i < tabHeures.length; i++) {
-        h = tabHeures[i]['heure']['h']
+        var h = tabHeures[i]['heure']['h']
         // console.log("i = " + i + ", heure = " + h);
         if ( i == 0 && heure < h) {
             console.log("!! ERREUR Recherche vitalités pour une heure qui est en dessous de l'heure de début : " + heure)
@@ -258,12 +242,14 @@ function retVitalite(tabHeures, heure) {
     return tabHeures[tabHeures.length - 1]['heure'];
 }
 
+
+// ------------------------------------------------------
 // A partir de l'objet heure (partie de G_heuresV), mise à jour des couleurs des zones sur la carte
 function miseAJourAffichageVitalites(structHeure) {
     var k = Object.keys(structHeure['zones']);
     k.forEach(
         function (z) {
-            vitalite = structHeure['zones'][z];
+            var vitalite = structHeure['zones'][z];
             // console.log("--- zone = *" + z + "*   vitalite = " + vitalite);
             // Test si la zone existe en tant qu'objet graphique
             if (lzones.get(z) == undefined) {
@@ -276,28 +262,50 @@ function miseAJourAffichageVitalites(structHeure) {
     )
 }
 
-remplitTabHeuresChangementsVitalite(G_heuresV);
 
+// ------------------------------------------------------
 // Met à jour l'affichage des vitalités en fonction de la position du curseur de temps
 function curseurTempsMiseAJourVitalites(){
-    var largMarqeurTemps = 5; //en %
+    // Marqueur Temps : la petite fenêtre dans laquelle s'affiche le temps.
+    var largMarqueur = 5; //en %
     var valCurseur = curseurTemps.value;
+    // Position du marqueur : P
+    // P = ac + b où c est la valeur du curseur entre cm et cM (resp 0 et G_maxCurseur)
+    // P à priori varie de pm = 0 à pM = 100%
+    // a = (pM - pm) / (cM - cm) et b = pm - a.cm
+    var a = 100 / G_maxCurseur; // et b = 0
+    var posMarqueur = a * valCurseur;
+    if (posMarqueur < (largMarqueur / 2)) {
+        posMarqueur = 0;
+    }
+    else if (posMarqueur > (100 - (largMarqueur / 2))) {
+        posMarqueur = 100 - (largMarqueur);
+    }
+    else {
+        posMarqueur = posMarqueur - (largMarqueur / 2);
+    }
 
-    posMarqueur = Math.floor(((100 - largMarqeurTemps)/ G_maxCurseur) * valCurseur) + "%";
-    marqueurTemps.style.width = largMarqeurTemps + "%";
-    marqueurTemps.style.marginLeft = posMarqueur;
-    mnMin = convHeureVersMn(G_heuresV[0]['heure']['h']);
-    mnMax = convHeureVersMn(G_heuresV[G_heuresV.length - 1]['heure']['h']);
-    mn = Math.floor(mnMin +  ((mnMax - mnMin)/G_maxCurseur) * valCurseur);
-    console.log("mnMin = " +  mnMin);
-    hm = convMnVersHeure(mn);
-    console.log("Curseur : " + valCurseur + ", minutes = " + mn + ", heures = " + hm);
+    marqueurTemps.style.width = largMarqueur + "%";
+    marqueurTemps.style.left = posMarqueur + "%";
+    marqueurTemps.style.position = "relative";
+    var mnMin = convHeureVersMn(G_heuresV[0]['heure']['h']);
+    var mnMax = convHeureVersMn(G_heuresV[G_heuresV.length - 1]['heure']['h']);
+    var mn = Math.floor(mnMin +  ((mnMax - mnMin)/G_maxCurseur) * valCurseur);
+    //console.log("mnMin = " +  mnMin);
+    var hm = convMnVersHeure(mn);
+    //console.log("Curseur : " + valCurseur + ", minutes = " + mn + ", heures = " + hm);
     // Les valeurs de vitalités :
-    vitalites = retVitalite(G_heuresV, hm);
+    var vitalites = retVitalite(G_heuresV, hm);
     if (vitalites != false) {
         miseAJourAffichageVitalites(vitalites);
     }
-    marqueurTemps.textContent = convHeureVersCh(hm);
+    // Mise à jour du temps affiché dans la petite fenêtre
+    var hmVitalite = vitalites['h'];
+    //console.log("hmVitalite = ", hmVitalite);
+    // On choisit d'afficher le temps correspondant au dernier calcul de vitalité
+    marqueurTemps.textContent = convHeureVersCh(hmVitalite);
+    // Si on préfère afficher le temps correspondant à la position du curseur :
+    //marqueurTemps.textContent = convHeureVersCh(hm);
 }
 
 // h = retVitalite(G_heuresV, 1049);
@@ -307,6 +315,8 @@ function curseurTempsMiseAJourVitalites(){
 //     miseAJourAffichageVitalites(h);
 // }
 
+
+// ------------------------------------------------------
 // Retourne la valeur moyenne des vitalités pour une heure
 // Argument : objet heure, issu de G_heuresV
 function calculeMoyenneVitalites(structHeure) {
@@ -320,7 +330,7 @@ function calculeMoyenneVitalites(structHeure) {
         }
     )
     //var nbZones = k.length;
-    console.log("nbZones = " + nbZones);
+    //console.log("nbZones = " + nbZones);
     var vitaliteMoy = vitalite / nbZones;
     if (vitaliteMoy > 1) {
         console.log("!!! ERREUR vitalité moyenne > 1 : " + vitaliteMoy +  ", pour l'heure " + structHeure['h']);
@@ -329,9 +339,10 @@ function calculeMoyenneVitalites(structHeure) {
     return (vitaliteMoy);
 }
 
-
+// ------------------------------------------------------
 function ajouteLigneVitalitesMoyennes(tabHeures) {
-    nbElts = tabHeures.length
+    var nbElts = tabHeures.length
+    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
     for(var i = 0; i < nbElts; i++) {
         var structHeure = tabHeures[i]['heure'];
         var vitalite = calculeMoyenneVitalites(structHeure);
@@ -348,45 +359,55 @@ function ajouteLigneVitalitesMoyennes(tabHeures) {
     }
 }
 
-
+// ------------------------------------------------------
 function ajouteGraduationsTemps(tabHeures) {
-    mnMin = convHeureVersMn(tabHeures[0]['heure']['h']);
-    mnMax = convHeureVersMn(tabHeures[tabHeures.length - 1]['heure']['h']);
-    console.log("mnMin = " + mnMin + ", mnMax = " + mnMax);
+    var mnMin = convHeureVersMn(tabHeures[0]['heure']['h']);
+    var mnMax = convHeureVersMn(tabHeures[tabHeures.length - 1]['heure']['h']);
+    //console.log("mnMin = " + mnMin + ", mnMax = " + mnMax + ",  hmax = " + tabHeures[tabHeures.length - 1]['heure']['h']);
     // Objet donnant la position des graduations d'heure de demi-heure
     var grad = [];
-    var t = mnMin;
-    for(var i = 0; i < tabHeures.length; i++) {
-        var position = i * 100 /(mnMax - mnMin); // Position pour une largeur de 100
-        if (Math.floor(t/60) == t/60) {
-            var h = {'heure': {'label': t/60 + 'h', 'position': position}};
-            console.log('grad heure pour t = ' + t + ", position : " + position);
+    // Calcul de la position P sur le graphique en fonction du temps t
+    // La position prend les valeurs pm = pM (ici pm = 0, pM = 100%)
+    // Le temps varie de tm à tM
+    // P = a.t + b
+    //     a = (pM - pm) / (tM - tm)
+    //     b = pm - a.tm
+    var a = 100 / (mnMax-mnMin);
+    var b = - a * mnMin;
+    for (mn = mnMin ; mn <= mnMax ; mn++) {
+        var position = mn * a + b;
+        if (Math.floor(mn/60) == mn/60) {
+            var h = {'heure': {'label': mn/60 + 'h', 'position': position}};
+            //console.log('grad heure pour mn = ' + mn + ", position : " + position);
             grad.push(h);
         }
-        else if (Math.floor(t/30) == t/30) {
+        else if (Math.floor(mn/30) == mn/30) {
             var dmh = {'demiHeure': {'label': '', 'position': position}};
             grad.push(dmh);
         }
-        t += 1;
     }
-    console.log("Nbr de graduations temps : " + grad.length);
-    console.log(grad);
+    //console.log("Nbr de graduations temps : " + grad.length);
+    //onsole.log(grad);
     // Création des objets htmlgraduationsTempsContainer
     var graduationsTempsContainer = document.getElementById("graduationsTempsContainer");
     //for(var v of grad) {
     for(var i = 0 ; i < grad.length ; i++){
         var v = grad[i];
-        console.log(v);
+        //console.log(v);
         if (v['heure'] != undefined) {
             var baliseP = document.createElement("p");
             baliseP.className = "heure";
             baliseP.style.left = v['heure']['position'] + '%';
-            //baliseP.style.position = "relative";
             var baliseSpan = document.createElement("span");
             var label = document.createTextNode(v['heure']['label']);
             //var label = document.createTextNode('x');
-            baliseSpan.appendChild(label);
-            baliseP.appendChild(baliseSpan);
+            if (v['heure']['position'] > 99) {
+                //console.log("Graduiation pour heure : " + v['heure']['label'] + " trop à droite => Suppression label");
+            }
+            else {
+                baliseSpan.appendChild(label);
+                baliseP.appendChild(baliseSpan);
+            }
             graduationsTempsContainer.appendChild(baliseP);
         }
         if (v['demiHeure'] != undefined) {
@@ -404,17 +425,57 @@ function ajouteGraduationsTemps(tabHeures) {
 
     }
 }
+// ============================================================================
+// ============================================================================
 
+// Le curseur de temps prend des valeurs de 0 à G_maxCurseur
+// Fixé à nb de dates de mesure de vitalité - 1
+G_maxCurseur = undefined;
+
+
+
+// Dans cet objet on stocke pour chaque heure les vitalités des zones
+G_heuresV = []
+
+
+var mymap = L.map('mapid').setView([48.7640, 2.2884], 17);
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(mymap);
+
+// zones : chargé dans le html par  <script src="zones.geojson"></script>
+inverseLatLon(zones);
+lzones = new Map();
+
+// Affichage des zones, avec quelques propriétés statiques
+zones.features.forEach(
+    function(zone) {
+        lzone = new Map();
+        nom = zone.properties['nom']; // Nom de la zone
+        lzone.set('nom', nom);
+        lzone.set('lp', L.polygon(zone.geometry.coordinates[0]));
+        lzone.get('lp').bindTooltip("Zone : " + nom)
+        lzone.get('lp').addTo(mymap);
+        lzones.set(nom, lzone);
+
+    }
+)
 
 var curseurTemps = document.getElementById("curseurTemps");
 
-console.log("curseurTemps ");
-console.log(curseurTemps.min);
+var marqueurTemps = document.getElementById("marqueurTemps");
+remplitTabHeuresChangementsVitalite(G_heuresV);
+G_maxCurseur = G_heuresV.length - 1 ;
+curseurTemps.max = G_heuresV.length - 1;
+// console.log(curseurTemps.max);
 
-// Initialisations
-marqueurTemps = document.getElementById("marqueurTemps");
 
-curseurTemps.max = G_maxCurseur;
+
 curseurTempsMiseAJourVitalites();
 
 ajouteLigneVitalitesMoyennes(G_heuresV);

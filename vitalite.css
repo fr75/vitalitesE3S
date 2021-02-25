@@ -4,6 +4,7 @@
 
 .curseurTempsContainer {
   width: 100%; /* Width of the outside container */
+  position: relative;
 }
 
 /* The slider itself */
@@ -28,14 +29,14 @@
 .curseurTemps::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 40px;
+  width: 5px;
   height: 25px;
   background: #4CAF50;
   cursor: pointer; /* Style */
 }
 
 .curseurTemps::-moz-range-thumb {
-  width: 60px;
+  width: 5px;
   height: 25px;
   background: #4CAF50;
   cursor: pointer;
@@ -79,7 +80,10 @@
 }
 
 .graduationsTempsContainer {
-    width: 100%;
+    /* IMPORTANT : Pour que le positionnement de chaque élément du container soit calculé à partir de ce container,
+    il faut que celui-ci ait un positionnnement "relative" */
+    position: relative;
+    zzwidth: 100%;
     height: 50px;
     border: 1px solid black;
     padding-top: 0px;
@@ -89,14 +93,15 @@
 .graduationsTempsContainer p.heure {
     display: inline-block;
     height: 30px;
-    width: 2px;
+    width: 1px;
     border: 1px solid red;
     zzmargin-left: 20%;
-    left: 20%;
-    position: relative;
-    padding-bottom: 0px;
-    padding-top: 0px;
-    margin-bottom: 0px;
+    zzleft: 20%;
+    /* RAPPEL IMPORTANT : pour que la position  ("absolute") de cet élément soit calculée à partif de son container indépendamment
+    des autres éléments qu'il peut contenir, il faut que le container ait un positionnement "relative" */
+    position: absolute;
+    margin-bottom: 1px;
+    bottom: 0px;
 }
 
 .graduationsTempsContainer p.demiHeure {
@@ -105,12 +110,16 @@
     width: 1px;
     border: 1px solid red;
     zzmargin-left: 20%;
-    left: 50%;
-    position: relative;
-    margin-bottom: -10px;
+    zzleft: 50%;
+    /* RAPPEL IMPORTANT : pour que la position ("absolute") de cet élément soit calculée à partif de son container indépendamment
+    des autres éléments qu'il peut contenir, il faut que le container ait un positionnement "relative" */
+    position: absolute;
+    margin-bottom: 1px;
+    bottom: 0px;
     zzpadding-bottom: -20px;
 }
 
 .graduationsTempsContainer span {
     margin-left: 10px;
+    zzdisplay : none;
 }

@@ -12,11 +12,9 @@ import json
 import numpy as np
 import random as rd
 
+
 ZONES = {
-    'Polygon_0',
-    'Polygon_1', 'Polygon_2', 'Polygon_3', 'Polygon_4', 'Polygon_5', 'Polygon_6', 'Polygon_7', 'Polygon_8',
-    'Polygon_9', 'Polygon_10', 'Polygon_11', 'Polygon_12', 'Polygon_13', 'Polygon_14', 'Polygon_15', 'Polygon_16',
-    'Polygon_17', 'Polygon_18', 'Polygon_19'
+'LaValleePolygon', 'Lot C', 'Lot M', 'Lot F', 'Lot A', 'GS', 'Lot I', 'Lot E', 'Lot R', 'Lot K', 'Lot P', 'Polygon_13', 'Polygon_10', 'Lot G', 'Lot H', 'Lot L', 'Lot T', 'Lot S', 'Lot N', 'Lot O - LIDL', 'Lot J',
 }
 
 class Zone:

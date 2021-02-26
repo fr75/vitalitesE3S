@@ -51,18 +51,19 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
     def __init__ (self, ficCible):
         #self.fc =  open(ficCible, 'w')
         self.txtHorsBalise = ""
-        self.contexte = "" # Dans quelle balise on est
+        self.contexte = "None" # Dans quelle balise on est
         self.polygones = [] # Tableau d'objets Polygone
         self.nomP = "" # du polygone en cours de construction
         self.strJson = "" # Lles lignes à écrire dans le fichier geojson
-
+        self.listeZones = ""
     # Les méthodes héritées
     # ---------------------
 
     def startElement(self, name, attrs):
 
         if name == 'Placemark':
-            self.contexte = name
+            self.contexte = 'Placemark'
+            #print("* Contexte = " + self.contexte)
 
         elif name == 'name':
             self.txtHorsBalise = ""
@@ -76,14 +77,23 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
 
     def endElement(self, name):
 
-        if name == 'name':
-            self.nomP = self.txtHorsBalise
+        if name == 'Placemark':
+            self.contexte = 'None'
+            print("Contexte = " + self.contexte)
 
+        if name == 'name':
+            if self.contexte == "Placemark":
+                self.nomP = self.txtHorsBalise
+                self.listeZones += "'{}', ".format(self.nomP)
+                #print("Contexte = " + self.contexte + ", nom = " + self.nomP)
 
         elif name == 'coordinates':
+            if self.contexte != "Placemark":
+                pass
             polygone = Polygone(self.nomP)
             coord = self.txtHorsBalise
-            for line in coord.split('\n'):
+            tabCoord = re.split('\s', coord) # On découpe la ligne suivant espace ou saut de ligne
+            for line in tabCoord:
                 m = re.search('(\d+.\d+)\D+(\d+.\d+)\D+(\d+.\d+)', line)
                 if m is not None:
                     #print("Ajout des coordonnées : lon =  {}, lat = {}".format(m[1], m[2]))
@@ -99,6 +109,7 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
 
     def startDocument(self):
         self.strJson = '{ "type": "FeatureCollection",\n    "features": [\n'
+        self.listeZones = "ZONES = {\n"
 
 
     def endDocument(self):
@@ -112,13 +123,15 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
             self.strJson += p.ecritPolygoneGeojson()
             self.strJson += sep + '\n'
         self.strJson += '    ]\n}'
+        self.listeZones += "\n}"
+        print(self.listeZones)
 
     def retourneJson(self):
         return self.strJson
 
 ################################################################
 if __name__ == '__main__':
-    ficSource = "PolygonesLotsLaVallee.kml"
+    ficSource = "PolygonesLotsLaValleeEntier.kml"
     ficCibleJson = "zones.geojson"
 
     fs = open(ficSource, "r")

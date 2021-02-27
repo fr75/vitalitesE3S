@@ -88,14 +88,7 @@ function sleep(ms) {
 	// 	[51.503, -0.06],
 	// 	[51.51, -0.047]
 	// ]).addTo(mymap);
-// var Polygon1 =
-// L.polygon([
-//     [ 48.763714022, 2.28562831879 ],
-//     [ 48.7629148704, 2.28556394577 ],
-//     [ 48.7626319818, 2.28693723679 ],
-//     [ 48.763805959, 2.2875058651 ]
-// ]);
-// Polygon1.addTo(mymap);
+
 //
 // Polygon1.bindTooltip('La souris survole le polygon1');
 // // Par défaut, le polygone est bleu. On le change en rouge
@@ -315,50 +308,6 @@ function curseurTempsMiseAJourVitalites(){
 //     miseAJourAffichageVitalites(h);
 // }
 
-
-// ------------------------------------------------------
-// Retourne la valeur moyenne des vitalités pour une heure
-// Argument : objet heure, issu de G_heuresV
-function calculeMoyenneVitalites(structHeure) {
-    var vitalite = 0;
-    var k = Object.keys(structHeure['zones']);
-    var nbZones = 0;
-    k.forEach(
-        function (z) {
-            nbZones += 1;
-            vitalite += structHeure['zones'][z];
-        }
-    )
-    //var nbZones = k.length;
-    //console.log("nbZones = " + nbZones);
-    var vitaliteMoy = vitalite / nbZones;
-    if (vitaliteMoy > 1) {
-        console.log("!!! ERREUR vitalité moyenne > 1 : " + vitaliteMoy +  ", pour l'heure " + structHeure['h']);
-        return 0;
-    }
-    return (vitaliteMoy);
-}
-
-// ------------------------------------------------------
-function ajouteLigneVitalitesMoyennes(tabHeures) {
-    var nbElts = tabHeures.length
-    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
-    for(var i = 0; i < nbElts; i++) {
-        var structHeure = tabHeures[i]['heure'];
-        var vitalite = calculeMoyenneVitalites(structHeure);
-        //var vitalite = i / nbElts; //Pour tester
-        var moyenneVitalitesContainer = document.getElementById("moyenneVitalitesContainer");
-        var balise = document.createElement("p");
-        //var texte = document.createTextNode(i);
-        //balise.appendChild(texte);
-        // Modification de la largeur de l'élement
-        balise.style.width = (100 / nbElts) + "%";
-        balise.style.backgroundColor = heatMapColorforValue(vitalite);
-        // Ajout du nouvel élément
-        moyenneVitalitesContainer.appendChild(balise);
-    }
-}
-
 // ------------------------------------------------------
 function ajouteGraduationsTemps(tabHeures) {
     var mnMin = convHeureVersMn(tabHeures[0]['heure']['h']);
@@ -425,6 +374,171 @@ function ajouteGraduationsTemps(tabHeures) {
 
     }
 }
+
+// ------------------------------------------------------
+// Retourne la valeur moyenne des vitalités pour une heure
+// Argument : objet heure, issu de G_heuresV
+function calculeMoyenneVitalites(structHeure) {
+    var vitalite = 0;
+    var k = Object.keys(structHeure['zones']);
+    var nbZones = 0;
+    k.forEach(
+        function (z) {
+            nbZones += 1;
+            vitalite += structHeure['zones'][z];
+        }
+    )
+    //var nbZones = k.length;
+    //console.log("nbZones = " + nbZones);
+    var vitaliteMoy = vitalite / nbZones;
+    if (vitaliteMoy > 1) {
+        console.log("!!! ERREUR vitalité moyenne > 1 : " + vitaliteMoy +  ", pour l'heure " + structHeure['h']);
+        return 0;
+    }
+    return (vitaliteMoy);
+}
+
+
+
+// ------------------------------------------------------
+function ajouteLigneVitalitesMoyennes(tabHeures) {
+    var nbElts = tabHeures.length
+    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
+    for(var i = 0; i < nbElts; i++) {
+        var structHeure = tabHeures[i]['heure'];
+        var vitalite = calculeMoyenneVitalites(structHeure);
+        //var vitalite = i / nbElts; //Pour tester
+        var moyenneVitalitesContainer = document.getElementById("moyenneVitalitesContainer");
+        var balise = document.createElement("p");
+        //var texte = document.createTextNode(i);
+        //balise.appendChild(texte);
+        // Modification de la largeur de l'élement
+        balise.style.width = (100 / nbElts) + "%";
+        balise.style.backgroundColor = heatMapColorforValue(vitalite);
+        // Ajout du nouvel élément
+        moyenneVitalitesContainer.appendChild(balise);
+    }
+}
+// ------------------------------------------------------
+// Retourne la valeur de vitalité d'une zone pour une heure
+// Argument : objet heure, issu de G_heuresV
+// Retourne false si non trouvée
+function retVitalite1Zone(structHeure, zone) {
+    var vitalite = 0;
+    var k = Object.keys(structHeure['zones']);
+    if (structHeure['zones'][zone] == undefined) {
+            console.log("!!! Vitalité de la zone : " + zone + " non trouvée pour l'heure " + k['h']);
+            return false;
+    }
+    return structHeure['zones'][zone];
+}
+
+
+// ------------------------------------------------------
+function ajouteLigneVitalitesMoyennes(tabHeures) {
+    var nbElts = tabHeures.length
+    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
+    for(var i = 0; i < nbElts; i++) {
+        var structHeure = tabHeures[i]['heure'];
+        var vitalite = calculeMoyenneVitalites(structHeure);
+        //var vitalite = i / nbElts; //Pour tester
+        var moyenneVitalitesContainer = document.getElementById("moyenneVitalitesContainer");
+        var balise = document.createElement("p");
+        //var texte = document.createTextNode(i);
+        //balise.appendChild(texte);
+        // Modification de la largeur de l'élement
+        balise.style.width = (100 / nbElts) + "%";
+        balise.style.backgroundColor = heatMapColorforValue(vitalite);
+        // Ajout du nouvel élément
+        moyenneVitalitesContainer.appendChild(balise);
+    }
+}
+
+// ------------------------------------------------------
+// Retourne le nom de la zone en fonction de l'identifiant leaflet
+// Retoure false si non trouvée
+function retNomZone(lzones, _leaflet_id) {
+    for (const [k, v] of lzones) {
+        //console.log("Recherche nom zone pour _leaflet_id = " + _leaflet_id + " ** " + v.get('_leaflet_id'));
+        if (v.get('_leaflet_id') == _leaflet_id) {
+                console.log("Trouvé nom : " + v.get('nom') + " pour _leaflet_id = " + v.get('_leaflet_id'));
+                return v.get('nom');
+        }
+    }
+    console.log("!!! Nom de zone non trouvée pour _leaflet_id = " + _leaflet_id);
+    return false;
+}
+
+// ------------------------------------------------------
+function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id) {
+    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
+    //Recherche le nom de la zone
+    var nom = retNomZone(lzones, _leaflet_id);
+    if (nom == false) {
+        console.log("!!! Impossible d'afficher la ligne de vitalité pour la zone _leaflet_id = " + _leaflet_id);
+        return -1;
+    }
+    var nbElts = tabHeures.length;
+    var vitalitesContainer1Zone = document.getElementById("vitalite1ZoneContainer");
+    // nbElts = 1 si le container ne contient rien.
+    //var nbEltsContenus = vitalitesContainer1Zone.childNodes.length;
+    var nbEltsContenus = vitalitesContainer1Zone.getElementsByTagName("p").length;
+    //console.log("nb Elts contenus par vitalite1ZoneContainer = " + nbEltsContenus);
+    if (nbEltsContenus == 0) {
+        // On crée les éléments dans le container
+        // Ajout du titre
+        var baliseTitre = document.createElement("h2");
+        baliseTitre.appendChild(document.createTextNode("Vitalité pour la zone : "));
+        var baliseEmph = document.createElement("em");
+        baliseEmph.appendChild(baliseEmph.appendChild(document.createTextNode(nom)));
+        baliseTitre.appendChild(baliseEmph);
+        vitalitesContainer1Zone.appendChild(baliseTitre);
+        // Ajout des vitalités
+        for(var i = 0; i < nbElts; i++) {
+            var structHeure = tabHeures[i]['heure'];
+            vitalite = retVitalite1Zone(structHeure, nom);
+            //var vitalite = i / nbElts; //Pour tester
+            var balise = document.createElement("p");
+            //var texte = document.createTextNode(i);
+            //balise.appendChild(texte);
+            // Modification de la largeur de l'élement
+            balise.style.width = (100 / nbElts) + "%";
+            balise.style.backgroundColor = heatMapColorforValue(vitalite);
+            // Ajout du nouvel élément
+            vitalitesContainer1Zone.appendChild(balise);
+        }
+    }
+    else {
+        // Les éléments existent déjà, on se contente de modifier leur valeur de vitalité
+        eltsContenus = vitalitesContainer1Zone.getElementsByTagName("p");
+        nbEltsContenus = eltsContenus.length ;
+        //console.log("elts p = " + eltsContenus.length);
+        if (nbEltsContenus != nbElts) {
+            console.log("!!! nb de tags pour l'affichage de la vitalité d'une zone différents du nb de points de calcul horaire");
+            console.log("Il es probable que pour une date de calcul, il y a des zones absentes");
+        }
+        // mise à jour du titre
+        var titre = vitalitesContainer1Zone.getElementsByTagName("h2")[0];
+        var em = titre.getElementsByTagName("em")[0];
+        em.textContent = nom;
+        // Mise à jour des vitalités
+        for(var i = 0; i < nbElts; i++) {
+            var structHeure = tabHeures[i]['heure'];
+            vitalite = retVitalite1Zone(structHeure, nom);
+            //var vitalite = i / nbElts; //Pour tester
+            balise = eltsContenus[i];
+            //var texte = document.createTextNode(i);
+            //balise.appendChild(texte);
+            // Modification de la largeur de l'élement
+            balise.style.width = (100 / nbElts) + "%";
+            balise.style.backgroundColor = heatMapColorforValue(vitalite);
+            // Ajout du nouvel élément
+            //vitalitesContainer1Zone.appendChild(balise);
+        }
+    }
+}
+
+
 // ============================================================================
 // ============================================================================
 
@@ -455,14 +569,21 @@ lzones = new Map();
 // Affichage des zones, avec quelques propriétés statiques
 zones.features.forEach(
     function(zone) {
+        // On crée l'objet lzone
         lzone = new Map();
         nom = zone.properties['nom']; // Nom de la zone
         lzone.set('nom', nom);
+        // 'lp' : leaflet polygone
         lzone.set('lp', L.polygon(zone.geometry.coordinates[0]));
-        lzone.get('lp').bindTooltip("Zone : " + nom)
+        lzone.get('lp').bindTooltip("Zone : " + nom);
+        // Événement clic dans le polygone
+        lzone.get('lp').on('click', function(e){onPolygonClick(e)});
         lzone.get('lp').addTo(mymap);
+        // _leaflet_id est semble-t-il le nom du polygone. Les arcs ont certainement aussi un _leaflet_id.
+        // Pas trouvé mieux...
+        lzone.set('_leaflet_id', lzone.get('lp')._leaflet_id); // N'est dispo qu'après addTo()
+        // Ajout de l'objet lzone au tableau lzones
         lzones.set(nom, lzone);
-
     }
 )
 
@@ -483,6 +604,15 @@ ajouteLigneVitalitesMoyennes(G_heuresV);
 
 ajouteGraduationsTemps(G_heuresV);
 
+// Gestion des événements
+// ========================
 
 // Evénement déplacement curseur de temps
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;
+
+
+function onPolygonClick(e) {
+    var _leaflet_id = e.sourceTarget._leaflet_id;
+    console.log("** clic zone " + _leaflet_id);
+    afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id);
+}

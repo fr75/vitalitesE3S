@@ -1,4 +1,23 @@
-#mapid { height: 800px; }
+
+body {
+    background: yellow;
+    zzwidth: 95%;
+    zzheight: 100%;
+}
+html, body {
+    height: 100%;
+    width: 100vw;
+    zzheight: 400px;
+}
+
+
+#mapid {
+    height: 80%;
+    height: 60%;
+    width: 100%;
+    zzheight: 400px;
+
+}
 
 
 
@@ -54,30 +73,7 @@
     zzleft: 100;
 }
 
-.moyenneVitalitesContainer {
-    width: 100%;
-    background-color: #c6e9b3;
-}
 
-.moyenneVitalitesContainer p {
-    display: inline-block;
-    width: 20%;
-    height: 20px;
-    background-color: #ffe9b3;
-    border: 0px solid red;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-left:  0px;
-    margin-right: 0px;
-}
-
-.moyenneVitalitesContainer p:hover {
-    content: "Coucou";
-    padding-top: 50px;
-    padding-bottom: 50px;
-    width: 50px;
-    background-color: red;
-}
 
 .graduationsTempsContainer {
     /* IMPORTANT : Pour que le positionnement de chaque élément du container soit calculé à partir de ce container,
@@ -122,4 +118,55 @@
 .graduationsTempsContainer span {
     margin-left: 10px;
     zzdisplay : none;
+}
+
+
+.moyenneVitalitesContainer {
+    width: 100%;
+    background-color: #c6e9b3;
+}
+
+.moyenneVitalitesContainer p {
+    display: inline-block;
+    width: 20%;
+    height: 20px;
+    background-color: #ffe9b3;
+    border: 0px solid red;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left:  0px;
+    margin-right: 0px;
+}
+
+.moyenneVitalitesContainer p:hover {
+    content: "Coucou";
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 50px;
+    background-color: red;
+}
+
+.vitalite1ZoneContainer {
+    width: 100%;
+    background-color: #c6e9b3;
+}
+
+.vitalite1ZoneContainer p {
+    display: inline-block;
+    width: 20%;
+    height: 20px;
+    background-color: #ffe9b3;
+    border: 0px solid red;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left:  0px;
+    margin-right: 0px;
+}
+
+.vitalite1ZoneContainer p:hover {
+    content: "Coucou";
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 50px;
+    background-color: red;
 }

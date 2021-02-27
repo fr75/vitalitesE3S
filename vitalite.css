@@ -1,12 +1,12 @@
 
 body {
     background: #ffe781;
-    zzwidth: 95%;
+    width: 95%;
     zzheight: 100%;
 }
 html, body {
-    height: 100%;
-    width: 100vw;
+    height: 95%;
+    width: 99vw;
     zzheight: 400px;
 }
 
@@ -14,7 +14,7 @@ html, body {
 #mapid {
     height: 80%;
     height: 40%;
-    width: 100%;
+    width: 90%;
 
 }
 
@@ -31,7 +31,7 @@ html, body {
   appearance: none;
   width: 100%; /* Full-width */
   height: 25px; /* Specified height */
-  background: #d3d3d3; /* Grey background */
+  background: #ecda8d; /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
@@ -49,14 +49,14 @@ html, body {
   appearance: none;
   width: 5px;
   height: 25px;
-  background: #4CAF50;
+  background: #c61515;
   cursor: pointer; /* Style */
 }
 
 .curseurTemps::-moz-range-thumb {
   width: 5px;
   height: 25px;
-  background: #4CAF50;
+  background: #c61515;
   cursor: pointer;
 }
 
@@ -115,21 +115,23 @@ html, body {
 }
 
 .graduationsTempsContainer span {
-    margin-left: 10px;
+    position: relative;
+    left: 8px;
+    bottom:15px;
     zzdisplay : none;
 }
 
 
 .moyenneVitalitesContainer {
     width: 100%;
-    background-color: #c6e9b3;
+    background-color: #ecda8d;
 }
 
 .moyenneVitalitesContainer p {
     display: inline-block;
     width: 20%;
     height: 20px;
-    background-color: #ffe9b3;
+    background-color: #eacd52;
     border: 0px solid red;
     padding-left: 0px;
     padding-right: 0px;
@@ -147,14 +149,14 @@ html, body {
 
 .vitalite1ZoneContainer {
     width: 100%;
-    background-color: #c6e9b3;
+    background-color: #ecda8d;
 }
 
 .vitalite1ZoneContainer p {
     display: inline-block;
     width: 20%;
     height: 20px;
-    background-color: #ffe9b3;
+    background-color: #ecda8d;
     border: 0px solid red;
     padding-left: 0px;
     padding-right: 0px;

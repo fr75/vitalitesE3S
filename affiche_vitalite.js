@@ -544,6 +544,7 @@ function redimCarte() {
     console.log("dim fenêtre : " + l + " x " + h + " px");
     var carte = document.getElementById("mapid");
     carte.style.height = h - 400 + "px";
+    carte.style.width = l - 20 + "px";
 }
 
 // ============================================================================

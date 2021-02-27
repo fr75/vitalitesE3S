@@ -1,6 +1,6 @@
 
 body {
-    background: yellow;
+    background: #ffe781;
     zzwidth: 95%;
     zzheight: 100%;
 }
@@ -13,9 +13,8 @@ html, body {
 
 #mapid {
     height: 80%;
-    height: 60%;
+    height: 40%;
     width: 100%;
-    zzheight: 400px;
 
 }
 

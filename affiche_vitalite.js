@@ -538,6 +538,13 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id) {
     }
 }
 
+function redimCarte() {
+    var l = window.innerWidth;
+    var h = window.innerHeight;
+    console.log("dim fenêtre : " + l + " x " + h + " px");
+    var carte = document.getElementById("mapid");
+    carte.style.height = h - 400 + "px";
+}
 
 // ============================================================================
 // ============================================================================
@@ -561,6 +568,8 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 		tileSize: 512,
 		zoomOffset: -1
 	}).addTo(mymap);
+
+redimCarte();
 
 // zones : chargé dans le html par  <script src="zones.geojson"></script>
 inverseLatLon(zones);
@@ -606,6 +615,8 @@ ajouteGraduationsTemps(G_heuresV);
 
 // Gestion des événements
 // ========================
+
+window.onresize = redimCarte;
 
 // Evénement déplacement curseur de temps
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;

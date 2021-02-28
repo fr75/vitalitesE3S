@@ -123,8 +123,18 @@ html, body {
 
 
 .moyenneVitalitesContainer {
+    position: relative;
     width: 100%;
     background-color: #ecda8d;
+    zzborder: 1px solid red;
+}
+
+.indicateur {
+    display: none;
+    position: relative; /* Relative : par rapport à la position qu'il devrait avoir */
+    width: 15px;
+    bottom: -10px;
+    left: 0%;
 }
 
 .moyenneVitalitesContainer p {
@@ -132,7 +142,7 @@ html, body {
     width: 20%;
     height: 20px;
     background-color: #eacd52;
-    border: 0px solid red;
+    zzborder: 1px solid red;
     padding-left: 0px;
     padding-right: 0px;
     margin-left:  0px;

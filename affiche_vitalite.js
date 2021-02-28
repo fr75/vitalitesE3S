@@ -299,6 +299,10 @@ function curseurTempsMiseAJourVitalites(){
     marqueurTemps.textContent = convHeureVersCh(hmVitalite);
     // Si on préfère afficher le temps correspondant à la position du curseur :
     //marqueurTemps.textContent = convHeureVersCh(hm);
+
+    // Mise à jour des indicateurs
+    majPositionIndicateur("moyenneVitalitesContainer");
+    majPositionIndicateur("vitalite1ZoneContainer");
 }
 
 // h = retVitalite(G_heuresV, 1049);
@@ -307,6 +311,26 @@ function curseurTempsMiseAJourVitalites(){
 // if (h != false) {
 //     miseAJourAffichageVitalites(h);
 // }
+
+
+
+// ------------------------------------------------------
+// Positionnne l'indicateur de vitalité moyenne en fonction de la position du curseur de temps
+// Arg : l'id du container
+function majPositionIndicateur(container) {
+    var valCurseur = curseurTemps.value ; // Le curseur de temps principal
+    var container = document.getElementById(container);
+    // Si les éléments du container n'ont pas été créés. C'est le cas du container vitalité 1 zone : contenu créé au 1er clic sur une zone.
+    if (container.getElementsByTagName("p").length == 0) {
+        return 0;
+    }
+
+    var indicateur = container.getElementsByTagName("img");
+    indicateur[0].style.left = (100 / G_maxCurseur) *  valCurseur + "%";
+    indicateur[0].style.display = "block";
+}
+
+
 
 // ------------------------------------------------------
 function ajouteGraduationsTemps(tabHeures) {
@@ -487,12 +511,12 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id) {
     if (nbEltsContenus == 0) {
         // On crée les éléments dans le container
         // Ajout du titre
-        var baliseTitre = document.createElement("h2");
+        var baliseTitre = vitalitesContainer1Zone.getElementsByTagName("h2")[0];
         baliseTitre.appendChild(document.createTextNode("Vitalité pour la zone : "));
         var baliseEmph = document.createElement("em");
         baliseEmph.appendChild(baliseEmph.appendChild(document.createTextNode(nom)));
         baliseTitre.appendChild(baliseEmph);
-        vitalitesContainer1Zone.appendChild(baliseTitre);
+        //vitalitesContainer1Zone.appendChild(baliseTitre);
         // Ajout des vitalités
         for(var i = 0; i < nbElts; i++) {
             var structHeure = tabHeures[i]['heure'];
@@ -609,7 +633,11 @@ curseurTemps.max = G_heuresV.length - 1;
 
 curseurTempsMiseAJourVitalites();
 
+
+
 ajouteLigneVitalitesMoyennes(G_heuresV);
+
+majPositionIndicateur("moyenneVitalitesContainer");
 
 
 ajouteGraduationsTemps(G_heuresV);
@@ -627,4 +655,5 @@ function onPolygonClick(e) {
     var _leaflet_id = e.sourceTarget._leaflet_id;
     console.log("** clic zone " + _leaflet_id);
     afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id);
+    majPositionIndicateur("vitalite1ZoneContainer");
 }

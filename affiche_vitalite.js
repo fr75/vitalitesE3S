@@ -209,7 +209,7 @@ function remplitTabHeuresChangementsVitalite(tabHeures) {
 
 
 // ------------------------------------------------------
-// Retourne les valeurs de vitalités
+// Retourne un tableau de 2 éléments [index dans le tableau des heures, les valeurs de vitalités]
 // Argument :l'heure du curseur en format entier : hhmm
 // return false si erreur
 function retVitalite(tabHeures, heure) {
@@ -225,14 +225,14 @@ function retVitalite(tabHeures, heure) {
             heurePrec = heure
         }
         else if (heure == h) {
-            return tabHeures[i]['heure'];
+            return [i, tabHeures[i]['heure']];
         }
         else if (heure < h) {
-            return tabHeures[i - 1]['heure'];
+            return [i, tabHeures[i - 1]['heure']];
         }
     }
     // Dernière valeur d'heure atteinte
-    return tabHeures[tabHeures.length - 1]['heure'];
+    return [i, tabHeures[tabHeures.length - 1]['heure']];
 }
 
 
@@ -288,7 +288,7 @@ function curseurTempsMiseAJourVitalites(){
     var hm = convMnVersHeure(mn);
     //console.log("Curseur : " + valCurseur + ", minutes = " + mn + ", heures = " + hm);
     // Les valeurs de vitalités :
-    var vitalites = retVitalite(G_heuresV, hm);
+    var vitalites = retVitalite(G_heuresV, hm)[1];
     if (vitalites != false) {
         miseAJourAffichageVitalites(vitalites);
     }
@@ -567,8 +567,93 @@ function redimCarte() {
     var h = window.innerHeight;
     console.log("dim fenêtre : " + l + " x " + h + " px");
     var carte = document.getElementById("mapid");
-    carte.style.height = h - 400 + "px";
+    carte.style.height = h - 450 + "px";
     carte.style.width = l - 20 + "px";
+}
+
+async function lecteur() {
+    while (1) {
+        await sleep(tempo_lecteur);
+        var valCurseur = curseurTemps.value;
+        if (etat_lecteur == "arrete") {
+            continue;
+        }
+        else if (etat_lecteur == "demarre") {
+            //console.log("** demarre");
+            if (curseurTemps.value == G_maxCurseur) {
+                if (mode_lecteur == "unique") {
+                    etat_lecteur = "arrete";
+                    console.log("lecteur : Passage auto en état 'arrêté' à la fin de la simulation");
+                    curseurTemps.value = 0;
+                    curseurTempsMiseAJourVitalites();
+                    continue;
+                } else if (mode_lecteur == "continu") {
+                    curseurTemps.value = 0;
+                    curseurTempsMiseAJourVitalites();
+                    continue;
+                } else {
+                    console.log("!!! mode du lecteur : " + mode_lecteur + " non valide");
+                }
+            } else {
+                curseurTemps.value = parseInt(curseurTemps.value) + 1;
+                curseurTempsMiseAJourVitalites();
+                //console.log("curseur Temps : " + curseurTemps.value);
+            }
+        } else {
+            console.log("!!! état du lecteur : " + etat_lecteur + " non valide");
+        }
+    }  // while
+}
+
+
+function clavierDown(e) {
+    touche = e.key;
+    if (etat_touche[touche] == "pressee") {
+        return 0;
+    }
+    //console.log("Appui touche : *" + touche + "*");
+    etat_touche[touche] = "pressee";
+
+    if (mode_lecteur == "unique" && (touche == 'c')) {
+        mode_lecteur = "continu";
+        console.log("Lecteur : Passage en mode 'continu'")
+    } else if (mode_lecteur == "continu" && (touche == ' ')) {
+        mode_lecteur = "unique";
+        console.log("Lecteur : Passage en mode 'unique'")
+    }
+
+    if ( (etat_lecteur == "arrete") && ( (touche == " ") || (touche == "c") )) {
+        etat_lecteur = "demarre";
+        console.log("lecteur : Passage en état 'démarré'")
+    } else if ( (etat_lecteur == "demarre") && (touche == " ") ) {
+        etat_lecteur = "arrete";
+        console.log("lecteur : Passage en état 'arrêté'")
+    }
+
+    if ((touche == '-') && (tempo_lecteur < tempo_lecteur_max)) {
+        tempo_lecteur = Math.floor(tempo_lecteur * 1.5);
+        console.log("lecteur : tempo augmentée : " + tempo_lecteur);
+    }
+    if (((touche == '+') || (touche == "=")) && (tempo_lecteur > tempo_lecteur_min)) {
+        tempo_lecteur = Math.floor(tempo_lecteur / 1.5);
+        console.log("lecteur : tempo diminuée : " + tempo_lecteur);
+    }
+}
+
+function clavierUp(e) {
+    touche = e.key
+    //console.log("Relâchement touche : *" + e.key + "*"   );
+    etat_touche[touche] = "relachee";
+}
+
+function onPolygonClick(e) {
+    var _leaflet_id = e.sourceTarget._leaflet_id;
+    console.log("** clic zone " + _leaflet_id);
+    afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id);
+    majPositionIndicateur("vitalite1ZoneContainer");
+    // Après avoir cliqué sur une zone, les touches +, =, espace, changent le zoom de la carte.
+    // Pour l'éviter, il faut supprimer le focus.
+    document.getElementById("mapid").blur();
 }
 
 // ============================================================================
@@ -584,7 +669,7 @@ G_maxCurseur = undefined;
 G_heuresV = []
 
 
-var mymap = L.map('mapid').setView([48.7640, 2.2884], 17);
+var mymap = L.map('mapid').setView([48.7640, 2.2884], 16);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -651,9 +736,26 @@ window.onresize = redimCarte;
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;
 
 
-function onPolygonClick(e) {
-    var _leaflet_id = e.sourceTarget._leaflet_id;
-    console.log("** clic zone " + _leaflet_id);
-    afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id);
-    majPositionIndicateur("vitalite1ZoneContainer");
-}
+
+
+// Clavier
+// etat de la touche : "relachee", "pressee"
+var etat_touche = [];
+
+// etats du lecteur : "arrete", "demarre"
+var etat_lecteur = "arrete";
+
+// Modes du lecteur : "unique", "continu"
+// unique : il s'arrête à la fin
+// continu : il recommence
+var mode_lecteur = "unique";
+
+// Temps en ms de passage à la valeur suivante
+var tempo_lecteur = 1000;
+var tempo_lecteur_min = 50;
+var tempo_lecteur_max = 10000
+
+document.addEventListener('keydown', clavierDown);
+document.addEventListener('keyup', clavierUp);
+
+lecteur();

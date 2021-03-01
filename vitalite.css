@@ -149,13 +149,7 @@ html, body {
     margin-right: 0px;
 }
 
-.moyenneVitalitesContainer p:hover {
-    content: "Coucou";
-    padding-top: 50px;
-    padding-bottom: 50px;
-    width: 50px;
-    background-color: red;
-}
+
 
 .vitalite1ZoneContainer {
     width: 100%;
@@ -168,16 +162,20 @@ html, body {
     height: 20px;
     background-color: #ecda8d;
     border: 0px solid red;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-left:  0px;
-    margin-right: 0px;
 }
 
-.vitalite1ZoneContainer p:hover {
-    content: "Coucou";
-    padding-top: 50px;
-    padding-bottom: 50px;
-    width: 50px;
-    background-color: red;
+
+
+#aide {
+    position: absolute;
+    bottom: 5px;
+}
+
+#aide b {
+    color: red;
+}
+
+h2 {
+    font-size: large;
+
 }

@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>PolygonesLotsLaValleeEntier.kml</name>
+	<open>1</open>
+	<Style>
+		<ListStyle>
+			<listItemType>check</listItemType>
+			<bgColor>00ffffff</bgColor>
+			<maxSnippetLines>2</maxSnippetLines>
+		</ListStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin3">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>ccffffff</color>
+		</PolyStyle>
+	</Style>
+	<Style id="sh_ylw-pushpin10">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>8cffffff</color>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin10">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>8cffffff</color>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin10">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin3</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin40</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-pushpin3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin10</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin10</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin40">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>2</width>
+		</LineStyle>
+		<PolyStyle>
+			<color>ccffffff</color>
+		</PolyStyle>
+	</Style>
+	<Placemark>
+		<name>LaValleePolygon</name>
+		<styleUrl>#msn_ylw-pushpin3</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.285317592146243,48.76229613250659,0 2.285513166697057,48.76222942177488,0 2.285589027160289,48.76252417795159,0 2.285728771797051,48.76240069040782,0 2.285766309788986,48.76250793013826,0 2.286358324997662,48.76264169435753,0 2.286383950282476,48.7626681450633,0 2.286883017713996,48.76261718653241,0 2.28685718908558,48.76255236774224,0 2.287644720082036,48.76246224449412,0 2.287583447500128,48.7619480270749,0 2.288161837484914,48.76186899047202,0 2.288308704851902,48.76237891265249,0 2.289398674436711,48.76225318419193,0 2.289286584267025,48.76172265918113,0 2.290934351538874,48.7614986360258,0 2.291095584184648,48.76200485676237,0 2.290850283647445,48.76208880189823,0 2.291394337956509,48.76379204316948,0 2.291447464252372,48.76426905583803,0 2.291368271791303,48.76459505928002,0 2.291218326567466,48.76490180909671,0 2.291004076942944,48.76526454865564,0 2.289862945765153,48.76643314906609,0 2.285762291746627,48.76587483575816,0 2.285805840586301,48.76562521184927,0 2.285302539077012,48.76562002906806,0 2.285317592146243,48.76229613250659,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot C</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.288183845952383,48.76595560038687,78.65758514404297 2.288355507329336,48.7654075354864,77.91545867919922 2.289221860841146,48.76550123732877,76.83739471435547 2.289048858359686,48.76608642789818,78.0499267578125 2.288183845952383,48.76595560038687,78.65758514404297 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot M</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.287659478111275,48.76294293746334,76.95591735839844 2.287643384857185,48.76246733037951,80.88406372070313 2.286854815406807,48.76255396546261,82.28157806396484 2.286887001914986,48.76262115175071,82.03163909912109 2.286452484054573,48.76267772960784,83.84449005126953 2.286551725788124,48.76293232917606,82.44435882568359 2.287659478111275,48.76294293746334,76.95591735839844 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot F</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.287471723480232,48.76399668283952,77.68962860107422 2.286425661964424,48.76388441404052,80.86053466796875 2.286425661964424,48.76306846869337,79.49274444580078 2.287466359062202,48.76307377282292,77.79981231689453 2.287471723480232,48.76399668283952,77.68962860107422 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot A</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.287356388492592,48.76462962664828,78.80797576904297 2.28702111236573,48.76500443877449,79.20943450927734 2.286604028863914,48.76481791705194,79.63143157958984 2.285996508522041,48.76474277777365,80.38568878173828 2.286007237358101,48.76449614335235,80.44040679931641 2.287356388492592,48.76462962664828,78.80797576904297 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>GS</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.28702111236573,48.76500620674964,79.328369140625 2.28653295032502,48.76554366829417,85.34772491455078 2.285953593177803,48.76549416549766,84.46639251708984 2.285996508522041,48.76474189378143,80.38568878173828 2.286602687759407,48.76481880104279,79.63143157958984 2.28702111236573,48.76500620674964,79.328369140625 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot I</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.289448230853441,48.76373380915695,72.05880737304688 2.290491610160235,48.76382221007219,70.95867919921875 2.29035213529146,48.76454355572542,70.60869598388672 2.289225607505205,48.76443394014175,73.04776000976563 2.289448230853441,48.76373380915695,72.05880737304688 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot E</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.287621927185066,48.76428309974111,77.35678100585938 2.28777749530793,48.76410276336389,77.19783020019531 2.286425661964424,48.76398607477473,80.45487976074219 2.286420297546394,48.76429017174268,80.30491638183594 2.287621927185066,48.76428309974111,77.35678100585938 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot R</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.287615217641226,48.76465261049127,77.54224395751953 2.288527168706289,48.76472332994208,75.35263824462891 2.288317956403128,48.76531029754058,77.82065582275391 2.287196793034902,48.76516886019241,80.04684448242188 2.287615217641226,48.76465261049127,77.54224395751953 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot K</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.290475797576912,48.76455537108378,70.72566223144531 2.291304600162514,48.76462609067155,69.65929412841797 2.291417252941139,48.76427249173684,69.8458251953125 2.291387748641975,48.7638835300332,70.27880096435547 2.290620636863716,48.76383756163288,71.10286712646484 2.290475797576912,48.76455537108378,70.72566223144531 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot P</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.288030849975375,48.76294752919463,76.18858337402344 2.288036214393405,48.76248783473028,80.31255340576172 2.28791283277872,48.76190083414385,83.13204956054688 2.28815959600809,48.76186812457208,82.40615844726563 2.288304435294894,48.76238528692959,81.00148010253906 2.289408164304523,48.76225268170454,77.96861267089844 2.289291488212375,48.76173463393651,81.29099273681641 2.289677726310519,48.76167805501699,81.25984954833984 2.289758192580966,48.7620175275779,78.59096527099609 2.288840877097873,48.76283791012744,75.85074615478516 2.28817032484415,48.76284144623007,76.74883270263672 2.28816496042612,48.76294752919457,75.48813629150391 2.288030849975375,48.76294752919463,76.18858337402344 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Polygon_13</name>
+		<description>User created polygon using Headwall Photonics&apos;s polygon tool. Altitude Values for the surface of the ground. Coordinates are in Longitude, Latitude, Altitude triplets.</description>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.28806448765122,48.76593438508265,78.79157257080078 2.288246877864233,48.76539692771962,77.98588562011719 2.287109621241918,48.76525549061544,80.65194702148438 2.286916502192846,48.76551007711616,82.44499206542969 2.286959417537084,48.76578587770217,83.39192962646484 2.28806448765122,48.76593438508265,78.79157257080078 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Polygon_10</name>
+		<description>User created polygon using Headwall Photonics&apos;s polygon tool. Altitude Values for the surface of the ground. Coordinates are in Longitude, Latitude, Altitude triplets.</description>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.291179873422018,48.76490896802674,69.42148590087891 2.290418126061788,48.76481703306106,70.48416900634766 2.290284015611044,48.76560201081317,70.91805267333984 2.29062733836495,48.7656621212163,71.89585113525391 2.290965296700826,48.76527317027527,70.2664794921875 2.291179873422018,48.76490896802674,69.42148590087891 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot G</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.289381456298836,48.76372794450823,72.41703796386719 2.289156150741585,48.76442807557483,73.01782989501953 2.287895512504585,48.76430431574293,75.05823516845703 2.288426589889534,48.7636536876105,73.29860687255859 2.289381456298836,48.76372794450823,72.41703796386719 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot H</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.288013529701241,48.76383048956746,74.75801849365234 2.288678717536934,48.76305609238884,74.58782196044922 2.2880242585373,48.76306670065002,75.38404846191406 2.288013529701241,48.76383048956746,74.75801849365234 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot L</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.290650414379409,48.76374063112721,71.55052185058594 2.290776478203109,48.76302634612096,74.01322174072266 2.291130529793075,48.76301573785129,74.58279418945313 2.291382657440475,48.7637936716878,70.56549072265625 2.290650414379409,48.76374063112721,71.55052185058594 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot T</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.288596906140676,48.76472332994208,75.24420166015625 2.290324248746267,48.7647940492934,70.56781768798828 2.290206231549612,48.76549770141343,71.63473510742188 2.288387693837515,48.76532090532569,77.75057220458984 2.288596906140676,48.76472332994208,75.24420166015625 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot S</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.290171362832418,48.76560554672119,71.64550018310547 2.290096260980001,48.76615007359123,72.45298004150391 2.289903141930929,48.76620311160718,72.52773284912109 2.289107866958013,48.76609349964582,77.79973602294922 2.289275505021444,48.76551007711619,76.55133056640625 2.290171362832418,48.76560554672119,71.64550018310547 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot N</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.288928302827009,48.76303199321961,74.96800994873047 2.289816114010939,48.76222310631633,77.56259155273438 2.290234538617262,48.76215591949575,77.2977294921875 2.290234538617262,48.76229736532917,77.17049407958984 2.289944860043653,48.76235040741404,76.89232635498047 2.289295765462049,48.76288436128119,75.86073303222656 2.289124104085096,48.76308238246444,74.98210906982422 2.288928302827009,48.76303199321961,74.96800994873047 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot O - LIDL</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.289125445189604,48.76308238246444,74.98838043212891 2.289295765462049,48.76288436128116,75.86073303222656 2.289621653857359,48.76261738505723,77.85725402832031 2.289939495625624,48.76235040741407,76.89232635498047 2.290229174199232,48.76230090146993,77.17049407958984 2.290239903035292,48.76215238334481,77.25039672851563 2.290674420895704,48.76210641335995,77.61441040039063 2.290690514149794,48.76239991330933,76.37765502929688 2.290910455289015,48.76238930490731,77.16983795166016 2.291119667592176,48.76298690806283,74.82631683349609 2.290663692059645,48.76300812461221,74.16889190673828 2.290508123936781,48.7637011936299,72.11570739746094 2.289058389964231,48.76357831601948,73.13654327392578 2.289125445189604,48.76308238246444,74.98838043212891 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark>
+		<name>Lot J</name>
+		<styleUrl>#msn_ylw-pushpin10</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<altitudeMode>absolute</altitudeMode>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						2.28850687435421,48.76353818247223,73.1934814453125 2.288922938408979,48.76303464528633,74.96318054199219 2.289121421876081,48.76307884637873,74.98210906982422 2.289057048859724,48.7635792000321,73.13654327392578 2.28850687435421,48.76353818247223,73.1934814453125 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

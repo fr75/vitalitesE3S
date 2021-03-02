@@ -562,6 +562,7 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id) {
     }
 }
 
+// ------------------------------------------------------
 function redimCarte() {
     var l = window.innerWidth;
     var h = window.innerHeight;
@@ -571,6 +572,7 @@ function redimCarte() {
     carte.style.width = l - 20 + "px";
 }
 
+// ------------------------------------------------------
 async function lecteur() {
     while (1) {
         await sleep(tempo_lecteur);
@@ -605,7 +607,7 @@ async function lecteur() {
     }  // while
 }
 
-
+// ------------------------------------------------------
 function clavierDown(e) {
     touche = e.key;
     if (etat_touche[touche] == "pressee") {
@@ -640,12 +642,14 @@ function clavierDown(e) {
     }
 }
 
+// ------------------------------------------------------
 function clavierUp(e) {
     touche = e.key
     //console.log("Relâchement touche : *" + e.key + "*"   );
     etat_touche[touche] = "relachee";
 }
 
+// ------------------------------------------------------
 function onPolygonClick(e) {
     var _leaflet_id = e.sourceTarget._leaflet_id;
     console.log("** clic zone " + _leaflet_id);
@@ -653,6 +657,27 @@ function onPolygonClick(e) {
     majPositionIndicateur("vitalite1ZoneContainer");
     // Après avoir cliqué sur une zone, les touches +, =, espace, changent le zoom de la carte.
     // Pour l'éviter, il faut supprimer le focus.
+    // document.getElementById("mapid").blur();
+}
+
+// ------------------------------------------------------
+function onMapClick(e) {
+    //console.log("clic map");
+    // Après avoir cliqué sur une zone, les touches +, =, espace, changent le zoom de la carte.
+    // Pour l'éviter, il faut supprimer le focus.
+    // Si on clique sur un polygone, on passe dans onPolygonClick() et dans cette fonction.
+    document.getElementById("mapid").blur();
+};
+
+// ------------------------------------------------------
+function onCarteZoomPlus(e) {
+    //console.log("Clic zoom +");
+    document.getElementById("mapid").blur();
+}
+
+// ------------------------------------------------------
+function onCarteZoomMoins(e) {
+    //console.log("Clic zoom -");
     document.getElementById("mapid").blur();
 }
 
@@ -735,8 +760,10 @@ window.onresize = redimCarte;
 // Evénement déplacement curseur de temps
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;
 
-
-
+// Clic gauche souris
+mymap.on('click', onMapClick);
+// Clic droit souris
+mymap.on('contextmenu', onMapClick);
 
 // Clavier
 // etat de la touche : "relachee", "pressee"
@@ -757,5 +784,10 @@ var tempo_lecteur_max = 10000
 
 document.addEventListener('keydown', clavierDown);
 document.addEventListener('keyup', clavierUp);
+
+L.DomEvent.addListener(document.querySelector('a.leaflet-control-zoom-in'), 'click', onCarteZoomPlus);
+L.DomEvent.addListener(document.querySelector('a.leaflet-control-zoom-out'), 'click', onCarteZoomMoins);
+
+
 
 lecteur();

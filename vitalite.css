@@ -130,12 +130,19 @@ html, body {
 }
 
 .indicateur {
-    display: none;
+    zzdisplay: none;
     position: relative; /* Relative : par rapport à la position qu'il devrait avoir */
     width: 15px;
     bottom: -10px;
     left: 0%;
 }
+
+#vitalite1ZoneContainer .fermer{
+    width: 15px;
+    display: inline !important;
+    padding-right: 10px;
+}
+
 
 .moyenneVitalitesContainer p {
     display: inline-block;
@@ -149,14 +156,16 @@ html, body {
     margin-right: 0px;
 }
 
+.masquer {
+    display: none;
+}
 
-
-.vitalite1ZoneContainer {
+#vitalite1ZoneContainer {
     width: 100%;
     background-color: #ecda8d;
 }
 
-.vitalite1ZoneContainer p {
+#vitalite1ZoneContainer p {
     display: inline-block;
     width: 20%;
     height: 20px;
@@ -167,6 +176,7 @@ html, body {
 
 
 #aide {
+    display: none;
     position: absolute;
     bottom: 5px;
 }

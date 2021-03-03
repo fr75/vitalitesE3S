@@ -1,18 +1,36 @@
-
+// Affichage des vitalités pour le quartier LA VALLÉE
 // Francis Dupin
 // février 2021
 
+// Nota : Les données (zones, vitalité) sont chargées par vitalite.html
+// à partir de zones.geojson et vitalite.geojson, pas à partir de ce script
+
+// ============================================================================
+// Quelques variables de config importantes
+// ============================================================================
+// Le nombre maxi de zones à afficher sous la carte
+var maxContainersZone = 3;
+
+// Lecteur
+// Temps en ms de passage à la valeur suivante
+var tempo_lecteur = 1000;
+var tempo_lecteur_min = 50;
+var tempo_lecteur_max = 10000
+
+// La carte, coord de centrage et zoom initial
+var latInit = 48.7640
+var lonInit = 2.2884
+var zoomInit = 16
 
 
-//const zones = require('zones.js');
-// import * as data from 'zones.js';
-// console.log(zones.features[0].properties['nom']);
-// console.log(zones.features[0].geometry.coordinates[0][1]);
+
+// ============================================================================
+//                  FONCTIONS
+// ============================================================================
 
 // ------------------------------------------------------
 // Malheureusement geojson code les coord en lon,lat dans cet ordre, et leaflet les utilse en lat,lon
-function inverseLatLon(zones)
-{
+function inverseLatLon(zones) {
     zones.features.forEach(
         function(zone) {
             zone.geometry.coordinates[0].forEach(
@@ -55,7 +73,7 @@ function hslToHex(h, s, l) {
         return hex.length === 1 ? '0' + hex : hex;
     };
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-} // function hslToHex
+}
 
 // ------------------------------------------------------
 // Retourne une couleur en fonction d'un indice de chaleur entre 0 et 1
@@ -70,68 +88,6 @@ function heatMapColorforValue(value){
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-
-
-	// L.marker([51.5, -0.09]).addTo(mymap);
-//
-	// L.circle([51.508, -0.11], {
-	// 	color: 'red',
-	// 	fillColor: '#f03',
-	// 	fillOpacity: 0.5,
-	// 	radius: 500
-	// }).addTo(mymap);
-//
-	// L.polygon([
-	// 	[51.509, -0.08],
-	// 	[51.503, -0.06],
-	// 	[51.51, -0.047]
-	// ]).addTo(mymap);
-
-//
-// Polygon1.bindTooltip('La souris survole le polygon1');
-// // Par défaut, le polygone est bleu. On le change en rouge
-// //Polygon1.setStyle({fillColor: '#FF0000FF'});
-// Polygon1.setStyle({fillColor: heatMapColorforValue(0.8)});
-// Polygon1.setStyle({fillOpacity: 0.5});
-//
-// var Polygon2 =
-// L.polygon([
-//     [ 48.7652062092, 2.28561758995 ],
-//     [ 48.7658143865, 2.28622913361 ],
-//     [ 48.7661396876, 2.28787064552 ],
-//     [ 48.7655951606, 2.28827834129 ],
-//     [ 48.7648738301, 2.28743076324 ],
-// ])
-// Polygon2.addTo(mymap);
-
-
-// Crée les objets leaflet polygones
-
-
-// // On fait varier la couleur
-// async function testeCouleurs() {
-//     chaleur1 = 0;
-//     chaleur2 = 1;
-//     while (1) {
-//         //console.log(lzones.get('Lot M'));
-//         lzones.get('Lot M').get('lp').setStyle({fillColor: heatMapColorforValue(chaleur1)});
-//         Polygon2.setStyle({fillColor: heatMapColorforValue(chaleur2)});
-//         chaleur1 += 0.01;
-//         chaleur2 -= 0.01
-//         if (chaleur1 > 1) {
-//             chaleur1 = 0;
-//             chaleur2 = 1;
-//             await sleep(1000);
-//         }
-//
-//         await sleep(100);
-//         //console.log(chaleur);
-//     }
-// }
-// testeCouleurs();
-
 
 // ------------------------------------------------------
 // Retourne la structure heure si trouvée, false sinon
@@ -160,7 +116,6 @@ function convMnVersHeure(mn) {
     var m = mn - h * 60;
     return (h * 100 + m);
 }
-
 
 // ------------------------------------------------------
 // Ajoute des zéros à gauche à un nombre sous forme de chaîne,
@@ -207,7 +162,6 @@ function remplitTabHeuresChangementsVitalite(tabHeures) {
     )
 }
 
-
 // ------------------------------------------------------
 // Retourne un tableau de 2 éléments [index dans le tableau des heures, les valeurs de vitalités]
 // Argument :l'heure du curseur en format entier : hhmm
@@ -235,6 +189,35 @@ function retVitalite(tabHeures, heure) {
     return [i, tabHeures[tabHeures.length - 1]['heure']];
 }
 
+// ------------------------------------------------------
+// Retourne le nom de la zone en fonction de l'identifiant leaflet
+// Retoure false si non trouvée
+function retNomZone(lzones, _leaflet_id) {
+    for (const [k, v] of lzones) {
+        //console.log("Recherche nom zone pour _leaflet_id = " + _leaflet_id + " ** " + v.get('_leaflet_id'));
+        if (v.get('_leaflet_id') == _leaflet_id) {
+                //console.log("Trouvé nom : " + v.get('nom') + ", pour _leaflet_id = " + v.get('_leaflet_id'));
+                return v.get('nom');
+        }
+    }
+    console.log("!!! Nom de zone non trouvée pour _leaflet_id = " + _leaflet_id);
+    return false;
+}
+
+// ------------------------------------------------------
+// Retourne l'identifiant leaflet de la zone passée en argument
+// Retoure false si non trouvée
+function ret_Leaflet_id(lzones, nomZone) {
+    for (const [k, v] of lzones) {
+        //console.log("Recherche nom zone pour _leaflet_id = " + _leaflet_id + " ** " + v.get('_leaflet_id'));
+        if (v.get('nom') == nomZone) {
+                //console.log("Trouvé  _leaflet_id = " + v.get('_leaflet_id') + ", pour nom : " + v.get('nom'));
+                return v.get('_leaflet_id');
+        }
+    }
+    console.log("!!! _leaflet_id non trouvé pour la zone = " + nomZone);
+    return false;
+}
 
 // ------------------------------------------------------
 // A partir de l'objet heure (partie de G_heuresV), mise à jour des couleurs des zones sur la carte
@@ -254,7 +237,6 @@ function miseAJourAffichageVitalites(structHeure) {
         }
     )
 }
-
 
 // ------------------------------------------------------
 // Met à jour l'affichage des vitalités en fonction de la position du curseur de temps
@@ -303,43 +285,6 @@ function curseurTempsMiseAJourVitalites(){
     // Mise à jour des indicateurs
     majPositionIndicateur("moyenneVitalitesContainer");
     majPositionIndicateursZones();
-}
-
-// h = retVitalite(G_heuresV, 1049);
-// //console.log("Heure : " );
-// //console.log(h);
-// if (h != false) {
-//     miseAJourAffichageVitalites(h);
-// }
-
-
-
-// ------------------------------------------------------
-// Positionnne l'indicateur de vitalité moyenne en fonction de la position du curseur de temps
-// Arg : l'id du container
-function majPositionIndicateur(idContainer) {
-    console.log("majPositionIndicateur container : " + idContainer);
-    var valCurseur = curseurTemps.value ; // Le curseur de temps principal
-    var container = document.getElementById(idContainer);
-    // Si les éléments du container n'ont pas été créés. C'est le cas du container vitalité 1 zone : contenu créé au 1er clic sur une zone.
-    if (container.getElementsByTagName("p").length == 0) {
-        return 0;
-    }
-
-    var indicateur = container.getElementsByClassName("indicateur");
-    indicateur[0].style.left = (100 / G_maxCurseur) *  valCurseur + "%";
-    indicateur[0].style.display = "block";
-}
-
-// ------------------------------------------------------
-// Met à jour tous les indicateurs des zones
-function majPositionIndicateursZones() {
-    for (index = 0 ; index < maxContainersZone ; index++) {
-        if (containerZoneEstAffiche(index) == true) {
-            var containerId =  "vitalite1ZoneContainer" + "_" + index;
-            majPositionIndicateur(containerId);
-        }
-    }
 }
 
 // ------------------------------------------------------
@@ -410,6 +355,36 @@ function ajouteGraduationsTemps(tabHeures) {
 }
 
 // ------------------------------------------------------
+// Positionnne l'indicateur de vitalité moyenne en fonction de la position du curseur de temps
+// L'indicateur est le petit doigt triangulaire au dessus de la ligne de zone
+// Arg : l'id du container ('moyenneVitalitesContainer', 'vitalite1ZoneContainer_0', 'vitalite1ZoneContainer_1', ...)
+function majPositionIndicateur(idContainer) {
+    // console.log("majPositionIndicateur container : " + idContainer);
+    var valCurseur = curseurTemps.value ; // Le curseur de temps principal
+    var container = document.getElementById(idContainer);
+    // Si les éléments du container n'ont pas été créés. C'est le cas du container vitalité 1 zone : contenu créé au 1er clic sur une zone.
+    if (container.getElementsByTagName("p").length == 0) {
+        return 0;
+    }
+
+    var indicateur = container.getElementsByClassName("indicateur");
+    indicateur[0].style.left = (100 / G_maxCurseur) *  valCurseur + "%";
+    indicateur[0].style.display = "block";
+}
+
+// ------------------------------------------------------
+// Met à jour tous les indicateurs des zones. Ne concerne pas la ligne de vitalité moyenne
+function majPositionIndicateursZones() {
+    for (index = 0 ; index < maxContainersZone ; index++) {
+        if (containerZoneEstAffiche(index) == true) {
+            var containerId =  "vitalite1ZoneContainer" + "_" + index;
+            majPositionIndicateur(containerId);
+        }
+    }
+}
+
+// ***********  Ligne d'affichage de la vitalité moyenne en fct du temps
+// ------------------------------------------------------
 // Retourne la valeur moyenne des vitalités pour une heure
 // Argument : objet heure, issu de G_heuresV
 function calculeMoyenneVitalites(structHeure) {
@@ -432,8 +407,6 @@ function calculeMoyenneVitalites(structHeure) {
     return (vitaliteMoy);
 }
 
-
-
 // ------------------------------------------------------
 function ajouteLigneVitalitesMoyennes(tabHeures) {
     var nbElts = tabHeures.length
@@ -453,6 +426,11 @@ function ajouteLigneVitalitesMoyennes(tabHeures) {
         moyenneVitalitesContainer.appendChild(balise);
     }
 }
+
+// ***********
+
+
+// ***********  Lignes d'affichage de la vitalité d'une zone en fct du temps
 // ------------------------------------------------------
 // Retourne la valeur de vitalité d'une zone pour une heure
 // Argument : objet heure, issu de G_heuresV
@@ -467,59 +445,8 @@ function retVitalite1Zone(structHeure, zone) {
     return structHeure['zones'][zone];
 }
 
-
 // ------------------------------------------------------
-function ajouteLigneVitalitesMoyennes(tabHeures) {
-    var nbElts = tabHeures.length
-    //console.log("Nb de dates de calcul de vitalité : " + nbElts);
-    for(var i = 0; i < nbElts; i++) {
-        var structHeure = tabHeures[i]['heure'];
-        var vitalite = calculeMoyenneVitalites(structHeure);
-        //var vitalite = i / nbElts; //Pour tester
-        var moyenneVitalitesContainer = document.getElementById("moyenneVitalitesContainer");
-        var balise = document.createElement("p");
-        //var texte = document.createTextNode(i);
-        //balise.appendChild(texte);
-        // Modification de la largeur de l'élement
-        balise.style.width = (100 / nbElts) + "%";
-        balise.style.backgroundColor = heatMapColorforValue(vitalite);
-        // Ajout du nouvel élément
-        moyenneVitalitesContainer.appendChild(balise);
-    }
-}
-
-// ------------------------------------------------------
-// Retourne le nom de la zone en fonction de l'identifiant leaflet
-// Retoure false si non trouvée
-function retNomZone(lzones, _leaflet_id) {
-    for (const [k, v] of lzones) {
-        //console.log("Recherche nom zone pour _leaflet_id = " + _leaflet_id + " ** " + v.get('_leaflet_id'));
-        if (v.get('_leaflet_id') == _leaflet_id) {
-                //console.log("Trouvé nom : " + v.get('nom') + ", pour _leaflet_id = " + v.get('_leaflet_id'));
-                return v.get('nom');
-        }
-    }
-    console.log("!!! Nom de zone non trouvée pour _leaflet_id = " + _leaflet_id);
-    return false;
-}
-
-// ------------------------------------------------------
-// Retourne l'identifiant leaflet de la zone passée en argument
-// Retoure false si non trouvée
-function ret_Leaflet_id(lzones, nomZone) {
-    for (const [k, v] of lzones) {
-        //console.log("Recherche nom zone pour _leaflet_id = " + _leaflet_id + " ** " + v.get('_leaflet_id'));
-        if (v.get('nom') == nomZone) {
-                //console.log("Trouvé  _leaflet_id = " + v.get('_leaflet_id') + ", pour nom : " + v.get('nom'));
-                return v.get('_leaflet_id');
-        }
-    }
-    console.log("!!! _leaflet_id non trouvé pour la zone = " + nomZone);
-    return false;
-}
-
 // indexAff : le numéro du container pour l'affichage
-// ------------------------------------------------------
 function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
     //console.log("Nb de dates de calcul de vitalité : " + nbElts);
     //Recherche le nom de la zone
@@ -552,9 +479,7 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
         baliseFermer.classList.add('fermer');
         baliseFermer.title = "Fermer";
         baliseFermer.addEventListener("click", function (e) {
-            console.log("Fermer container index : " + indexAff);
-            //masquerContainerZone(indexAff);
-            deplaceDonneesContainersZone (lzones, tabHeures, indexAff)
+            clickFermerLigneZone(e, lzones, tabHeures, indexAff);
         });
         baliseTitre.appendChild(baliseFermer);
         //var baliseTitre = vitalitesContainer1Zone.getElementsByTagName("h2")[0];
@@ -593,7 +518,7 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
         //console.log("elts p = " + eltsContenus.length);
         if (nbEltsContenus != nbElts) {
             console.log("!!! nb de tags pour l'affichage de la vitalité d'une zone différents du nb de points de calcul horaire");
-            console.log("Il es probable que pour une date de calcul, il y a des zones absentes");
+            console.log("Il est probable que pour une date de calcul, il y a des zones absentes");
         }
         // mise à jour du titre
         var titre = containerFils.getElementsByTagName("h2")[0];
@@ -617,6 +542,117 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
 }
 
 // ------------------------------------------------------
+// Retrourne True si le container est affiché, false sinon
+function containerZoneEstAffiche(indexAff) {
+    var idContainerFils = "vitalite1ZoneContainer" + "_" + indexAff;
+    var containerFils = document.getElementById(idContainerFils);
+    if (containerFils == undefined) {
+        // console.log("containerZoneEstAffiché, non défini : " + idContainerFils);
+        return false;
+    }
+    if (containerFils.classList.contains('masquer')) {
+        // console.log("Container zone index : " + indexAff + ", est masqué");
+        return false;
+    }
+    // console.log("Container zone index : " + indexAff + ", est NON masqué");
+    return true;
+}
+
+// ------------------------------------------------------
+// Masque le container. Retourne false si erreur, true sinon
+function masquerContainerZone(indexAff) {
+    var idContainerFils = "vitalite1ZoneContainer" + "_" + indexAff;
+    var containerFils = document.getElementById(idContainerFils);
+    if (containerFils == undefined) {
+        // console.log("Impossible de masquer le container : " + idContainerFils + " car il n'existe pas");
+        return false;
+    }
+    containerFils.classList.add('masquer');
+    return true;
+}
+
+
+// ------------------------------------------------------
+// Les containers des zones sont affichés dans cet ordre :
+// vitalite1ZoneContainer_0
+// vitalite1ZoneContainer_1
+// ...
+// maxContainersZone - 1
+// Ils sont créés dans l'odre inverse : maxContainersZone - 1, puis, ... 0
+// La fonction supprime les données de l'indexAff :
+// Déplace ou plus exactement réécrit les données d'index inférieur vers le bas
+// passe à display=None les containers inutilisés
+
+function deplaceDonneesContainersZone (lzones, tabHeures, indexAff) {
+    //console.log("***** Déplace zone à partir index : " + indexAff);
+    var nombreZonesAfficheesSup = 0; // Au dessus de indexAff (soit les index inférieurs)
+    for (var index = (indexAff - 1) ; index >= 0 ; index --) {
+        if (containerZoneEstAffiche(index) == true) {
+            nombreZonesAfficheesSup += 1;
+        }
+    }
+    //console.log("Nombre de zones affichées au dessus de index : " + indexAff + " : " + nombreZonesAfficheesSup);
+    // Déplacement des zones
+    for (var index = indexAff ; index >= 0 ; index --) {
+        if (((index - 1) >= 0) && (containerZoneEstAffiche(index - 1) == true) ) {
+            // Récupération de l'id leaflet de la zone sup
+            var containerSup = document.getElementById("vitalite1ZoneContainer" + "_" + (index -1));
+            var nomZoneAfficheeSup = containerSup.querySelectorAll(".nomZone")[0].innerText;
+            var _leaflet_id = ret_Leaflet_id(lzones, nomZoneAfficheeSup);
+            // console.log("Zone " + nomZoneAfficheeSup + ", affichée index : " + (index - 1) +
+            //    ", sera affichée à l'index : " + index);
+            // Affichage dans le container de dessous
+            afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id, index);
+        }
+    }
+    // Masquage des zones
+    //for (var index = 0 ; index < (nombreZonesAfficheesSup - 1) ; index ++) {
+    for (var index = indexAff - nombreZonesAfficheesSup ; index >= 0 ; index --) {
+    // console.log("Masquer container index : " + index);
+        masquerContainerZone(index);
+    }
+
+}
+
+// ------------------------------------------------------
+// Retourne l'index du container où afficher la zone.
+// Retourne -1 sans rien modifier si pas d'affichage de la zone : déjà affichée.
+// Supprime la ligne la plus ancienne (celle du bas) si le nombre de zone max affichables est dépassé.
+function retIndexAffZone(nomZone) {
+    // Recherche si cette zone est déjà affichée
+    for (var indexAff = maxContainersZone - 1 ; indexAff >= 0 ; indexAff--) {
+        container = document.getElementById("vitalite1ZoneContainer" + "_" + indexAff);
+        if ((container != undefined) && (containerZoneEstAffiche(indexAff) == true)) {
+            nomZoneAffichee = container.querySelectorAll(".nomZone")[0].innerText;
+            // console.log("Nom zone affichée : " + nomZoneAffichee + ", index : " + indexAff);
+            if (nomZone == nomZoneAffichee) {
+                // console.log("Zone déjà affichée : " + nomZone);
+                return -1;
+            }
+        }
+    }
+    // Arrivé ici, la zone n'est pas déjà affichée
+    // Recherche dans quel container l'afficher
+    for (var indexAff = maxContainersZone - 1 ; indexAff >= 0 ; indexAff--) {
+        container = document.getElementById("vitalite1ZoneContainer" + "_" + indexAff);
+        // console.log("indexAff = " + indexAff);
+        if ((container == undefined) || ( containerZoneEstAffiche(indexAff) == false)) {
+            return indexAff;
+        }
+    }
+    // Tous les containers sont utilisés
+    // On va afficher les données dans le container 0, et déplacer toutes les autres zones vers le bas.
+    //console.log("Affichage dans container 0");
+    deplaceDonneesContainersZone (lzones, G_heuresV, maxContainersZone - 1)
+    return 0;
+}
+// ***********
+
+
+
+
+// ------------------------------------------------------
+// Redimension de la carte lorsque la géométrie de la fenêtre change
 function redimCarte() {
     var l = window.innerWidth;
     var h = window.innerHeight;
@@ -626,6 +662,8 @@ function redimCarte() {
     carte.style.width = l - 20 + "px";
 }
 
+
+// *********** Lecteur : Avancée du temps automatique
 // ------------------------------------------------------
 async function lecteur() {
     while (1) {
@@ -659,6 +697,17 @@ async function lecteur() {
             console.log("!!! état du lecteur : " + etat_lecteur + " non valide");
         }
     }  // while
+}
+// ***********
+
+
+// *********** Contrôles d'événements divers
+// Supprimer une ligne d'affichage de la vitalité d'une zone en fct du temps,
+// après avoir cliqué sur la case de fermeture
+// indexAff : l'index du container
+function clickFermerLigneZone(e, lzones, tabHeures, indexAff) {
+    console.log("Fermer container index : " + indexAff);
+    deplaceDonneesContainersZone (lzones, tabHeures, indexAff)
 }
 
 // ------------------------------------------------------
@@ -703,123 +752,9 @@ function clavierUp(e) {
     etat_touche[touche] = "relachee";
 }
 
-
-
-var maxContainersZone = 3;
-
-// ------------------------------------------------------
-// Retrourne True si le container est affiché, false sinon
-function containerZoneEstAffiche(indexAff) {
-    var idContainerFils = "vitalite1ZoneContainer" + "_" + indexAff;
-    var containerFils = document.getElementById(idContainerFils);
-    if (containerFils == undefined) {
-        console.log("containerZoneEstAffiché, non défini : " + idContainerFils);
-        return false;
-    }
-    if (containerFils.classList.contains('masquer')) {
-        console.log("Container zone index : " + indexAff + ", est masqué");
-        return false;
-    }
-    console.log("Container zone index : " + indexAff + ", est NON masqué");
-    return true;
-}
-
-// ------------------------------------------------------
-// Masque le container. Retourne false si erreur, true sinon
-function masquerContainerZone(indexAff) {
-    var idContainerFils = "vitalite1ZoneContainer" + "_" + indexAff;
-    var containerFils = document.getElementById(idContainerFils);
-    if (containerFils == undefined) {
-        console.log("!!! Impossible de masquer le container : " + idContainerFils + " car il n'existe pas");
-        return false;
-    }
-    containerFils.classList.add('masquer');
-    return true;
-}
-
-
-// ------------------------------------------------------
-// Les containers des zones sont affichés dans cet ordre :
-// vitalite1ZoneContainer_0
-// vitalite1ZoneContainer_1
-// ...
-// maxContainersZone - 1
-// Ils sont créés dans l'odre inverse : maxContainersZone - 1, puis, ... 0
-// La fonction supprime les données de l'indexAff :
-// Déplace ou plus exactement réécrit les données d'index inférieur vers le bas
-// passe à display=None les containers inutilisés
-
-function deplaceDonneesContainersZone (lzones, tabHeures, indexAff) {
-    console.log("***** déplace zone à partir index : " + indexAff);
-    var nombreZonesAfficheesSup = 0; // Au dessus de indexAff (soit les index inférieurs)
-    for (var index = (indexAff - 1) ; index >= 0 ; index --) {
-        if (containerZoneEstAffiche(index) == true) {
-            nombreZonesAfficheesSup += 1;
-        }
-    }
-    console.log("Nombre de zones affichées au dessus de index : " + indexAff + " : " + nombreZonesAfficheesSup);
-    // Déplacement des zones
-    for (var index = indexAff ; index >= 0 ; index --) {
-        if (((index - 1) >= 0) && (containerZoneEstAffiche(index - 1) == true) ) {
-            // Récupération de l'id leaflet de la zone sup
-            var containerSup = document.getElementById("vitalite1ZoneContainer" + "_" + (index -1));
-            var nomZoneAfficheeSup = containerSup.querySelectorAll(".nomZone")[0].innerText;
-            var _leaflet_id = ret_Leaflet_id(lzones, nomZoneAfficheeSup);
-            console.log("Zone " + nomZoneAfficheeSup + ", affichée index : " + (index - 1) +
-                ", sera affichée à l'index : " + index);
-            // Affichage dans le container de dessous
-            afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id, index);
-        }
-    }
-    // Masquage des zones
-    //for (var index = 0 ; index < (nombreZonesAfficheesSup - 1) ; index ++) {
-    for (var index = indexAff - nombreZonesAfficheesSup ; index >= 0 ; index --) {
-        console.log("Masquer container index : " + index);
-        masquerContainerZone(index);
-    }
-
-}
-
-
-
-
-// ------------------------------------------------------
-// Retourne l'index du container où afficher la zone.
-// Retourne -1 sans rien modifier si pas d'affichage de la zone : déjà affichée.
-// Supprime la ligne la plus ancienne (celle du bas) si le nombre de zone max affichables est dépassé.
-function retIndexAffZone(nomZone) {
-    // Recherche si cette zone est déjà affichée
-    for (var indexAff = maxContainersZone - 1 ; indexAff >= 0 ; indexAff--) {
-        container = document.getElementById("vitalite1ZoneContainer" + "_" + indexAff);
-        if ((container != undefined) && (containerZoneEstAffiche(indexAff) == true)) {
-            nomZoneAffichee = container.querySelectorAll(".nomZone")[0].innerText;
-            console.log("Nom zone affichée : " + nomZoneAffichee + ", index : " + indexAff);
-            if (nomZone == nomZoneAffichee) {
-                console.log("Zone déjà affichée : " + nomZone);
-                return -1;
-            }
-        }
-    }
-    // Arrivé ici, la zone n'est pas déjà affichée
-    // Recherche dans quel container l'afficher
-    for (var indexAff = maxContainersZone - 1 ; indexAff >= 0 ; indexAff--) {
-        container = document.getElementById("vitalite1ZoneContainer" + "_" + indexAff);
-        console.log("indexAff = " + indexAff);
-        if ((container == undefined) || ( containerZoneEstAffiche(indexAff) == false)) {
-            return indexAff;
-        }
-    }
-    // Tous les containers sont utilisés
-    // On va afficher les données dans le container 0, et déplacer toutes les autres zones vers le bas.
-    console.log("Affichage dans container 0");
-    deplaceDonneesContainersZone (lzones, G_heuresV, maxContainersZone - 1)
-    return 0;
-}
-
 // ------------------------------------------------------
 function onPolygonClick(e) {
     var _leaflet_id = e.sourceTarget._leaflet_id;
-    console.log("** clic zone " + _leaflet_id);
     var nomZone = retNomZone(lzones, _leaflet_id);
     if (nomZone == false) {
         return 0;
@@ -829,6 +764,7 @@ function onPolygonClick(e) {
         console.log("Zone : '" + nomZone + "' déjà affichée");
         return 0;
     }
+    console.log("Afficher zone : '" + nomZone + "' (id_leaflet :" + _leaflet_id + ")");
 
     afficheLigneVitalites1Zone(lzones, G_heuresV, _leaflet_id, indexAff);
     majPositionIndicateursZones();
@@ -868,19 +804,22 @@ function onCarteZoomMoins(e) {
 }
 
 // ============================================================================
+//                  FIN DES FONCTIONS
 // ============================================================================
 
 // Le curseur de temps prend des valeurs de 0 à G_maxCurseur
 // Fixé à nb de dates de mesure de vitalité - 1
-G_maxCurseur = undefined;
+var G_maxCurseur = undefined;
 
 
 
 // Dans cet objet on stocke pour chaque heure les vitalités des zones
-G_heuresV = []
+var G_heuresV = []
 
 
-var mymap = L.map('mapid').setView([48.7640, 2.2884], 16);
+
+
+var mymap = L.map('mapid').setView([latInit, lonInit], zoomInit);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -938,8 +877,26 @@ majPositionIndicateur("moyenneVitalitesContainer");
 
 ajouteGraduationsTemps(G_heuresV);
 
+// Le lecteur
+// ===========
+// etat de la touche : "relachee", "pressee"
+var etat_touche = [];
+
+// etats du lecteur : "arrete", "demarre"
+var etat_lecteur = "arrete";
+
+// Modes du lecteur : "unique", "continu"
+// unique : il s'arrête à la fin
+// continu : il recommence
+var mode_lecteur = "unique";
+
+lecteur();
+
 // Gestion des événements
 // ========================
+
+// Aussi dans le code :
+//     baliseFermer.addEventListener("click"
 
 window.onresize = redimCarte;
 
@@ -953,29 +910,9 @@ mymap.on('contextmenu', onMapClick);
 // Déplacement de la carte
 mymap.on('mousemove', onMapMouseMove);
 
-// Clavier
-// etat de la touche : "relachee", "pressee"
-var etat_touche = [];
-
-// etats du lecteur : "arrete", "demarre"
-var etat_lecteur = "arrete";
-
-// Modes du lecteur : "unique", "continu"
-// unique : il s'arrête à la fin
-// continu : il recommence
-var mode_lecteur = "unique";
-
-// Temps en ms de passage à la valeur suivante
-var tempo_lecteur = 1000;
-var tempo_lecteur_min = 50;
-var tempo_lecteur_max = 10000
 
 document.addEventListener('keydown', clavierDown);
 document.addEventListener('keyup', clavierUp);
 
 L.DomEvent.addListener(document.querySelector('a.leaflet-control-zoom-in'), 'click', onCarteZoomPlus);
 L.DomEvent.addListener(document.querySelector('a.leaflet-control-zoom-out'), 'click', onCarteZoomMoins);
-
-
-
-lecteur();

@@ -176,9 +176,10 @@ html, body {
 
 
 #aide {
-    display: none;
-    position: absolute;
-    bottom: 5px;
+    zzdisplay: none;
+    position: relative;
+    bottom: 0;
+    height: 2.5rem;
 }
 
 #aide b {

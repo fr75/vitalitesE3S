@@ -21,15 +21,14 @@ html {
 body {
     background: var(--fond);
     width: 99%;
-    height: 100%;
-    position: relative;
+    position: absolute;
     zzborder: 3px solid green;
+    min-height: 95%;
 }
 
 
 #mapid {
-    height: 80%;
-    height: 40%;
+    height: 100px; /* Peu importe, recalculé dynamiquement */
     width: 100%;
 
 }
@@ -138,12 +137,7 @@ body {
 }
 
 
-.moyenneVitalitesContainer {
-    position: relative;
-    width: 100%;
-    background-color: var(--fond-elts);
-    zzborder: 1px solid red;
-}
+
 
 .indicateur {
     zzdisplay: none;
@@ -153,25 +147,15 @@ body {
     left: 0%;
 }
 
-#vitalite1ZoneContainer .fermer{
-    width: 15px;
-    display: inline !important;
-    padding-right: 10px;
-}
-
-
-.moyenneVitalitesContainer p {
-    display: inline-block;
-    width: 20%;
-    height: 20px;
-    padding-left: 0px;
-    padding-right: 0px;
-    margin-left:  0px;
-    margin-right: 0px;
-}
-
 .masquer {
     display: none;
+}
+
+.moyenneVitalitesContainer {
+    position: relative;
+    width: 100%;
+    background-color: var(--fond-elts);
+    zzborder: 1px solid red;
 }
 
 #vitalite1ZoneContainer {
@@ -186,10 +170,31 @@ body {
     background-color: var(--fond-elts);
 }
 
+#vitalite1ZoneContainer .fermer{
+    width: 15px;
+    display: inline !important;
+    padding-right: 10px;
+}
+
+.moyenneVitalitesContainer p {
+    display: inline-block;
+    width: 20%;
+    height: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left:  0px;
+    margin-right: 0px;
+}
+
 
 
 #aide {
-    position: relative;
+    position: absolute;
+    bottom: -30px; /* Positionnement juste sous son container parent */
+    height: 30px;
+    zzborder: 1px solid var(--graduation-demiheure);
+    padding-top: 0;
+    padding-bottom: 10px;
 }
 
 #aide b {

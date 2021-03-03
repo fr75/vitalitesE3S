@@ -698,6 +698,7 @@ async function lecteur() {
 // Si la géométrie de la fenêtre a été modifiée
 // Redimension de la carte lorsque la géométrie de la fenêtre change
 function redimObjets() {
+    console.log("redimObjets()");
     var l = window.innerWidth;
     var h = window.innerHeight;
     //console.log("dim fenêtre : " + l + " x " + h + " px");
@@ -706,6 +707,19 @@ function redimObjets() {
     carte.style.width = l - 20 + "px";
 }
 
+// ------------------------------------------------------
+function recentreCarte() {
+    console.log("Recentre la carte");
+    mymap.panTo(new L.LatLng(latInit, lonInit));
+}
+
+// ------------------------------------------------------
+function redim() {
+    redimObjets();
+    recentreCarte();
+}
+
+// ------------------------------------------------------
 // Supprimer une ligne d'affichage de la vitalité d'une zone en fct du temps,
 // après avoir cliqué sur la case de fermeture
 // indexAff : l'index du container
@@ -821,7 +835,7 @@ var G_maxCurseur = undefined;
 var G_heuresV = []
 
 
-
+redimObjets();
 
 var mymap = L.map('mapid').setView([latInit, lonInit], zoomInit);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -833,7 +847,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 		zoomOffset: -1
 	}).addTo(mymap);
 
-redimObjets();
+
 
 // zones : chargé dans le html par  <script src="zones.geojson"></script>
 inverseLatLon(zones);
@@ -881,6 +895,7 @@ majPositionIndicateur("moyenneVitalitesContainer");
 
 ajouteGraduationsTemps(G_heuresV);
 
+
 // Le lecteur
 // ===========
 // etat de la touche : "relachee", "pressee"
@@ -902,7 +917,7 @@ lecteur();
 // Aussi dans le code :
 //     baliseFermer.addEventListener("click"
 
-window.onresize = redimObjets;
+window.onresize = redim;
 
 // Evénement déplacement curseur de temps
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;

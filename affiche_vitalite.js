@@ -651,16 +651,7 @@ function retIndexAffZone(nomZone) {
 
 
 
-// ------------------------------------------------------
-// Redimension de la carte lorsque la géométrie de la fenêtre change
-function redimCarte() {
-    var l = window.innerWidth;
-    var h = window.innerHeight;
-    //console.log("dim fenêtre : " + l + " x " + h + " px");
-    var carte = document.getElementById("mapid");
-    carte.style.height = h - 450 + "px";
-    carte.style.width = l - 20 + "px";
-}
+
 
 
 // *********** Lecteur : Avancée du temps automatique
@@ -702,6 +693,19 @@ async function lecteur() {
 
 
 // *********** Contrôles d'événements divers
+
+// ------------------------------------------------------
+// Si la géométrie de la fenêtre a été modifiée
+// Redimension de la carte lorsque la géométrie de la fenêtre change
+function redimObjets() {
+    var l = window.innerWidth;
+    var h = window.innerHeight;
+    //console.log("dim fenêtre : " + l + " x " + h + " px");
+    var carte = document.getElementById("mapid");
+    carte.style.height = h - 450 + "px";
+    carte.style.width = l - 20 + "px";
+}
+
 // Supprimer une ligne d'affichage de la vitalité d'une zone en fct du temps,
 // après avoir cliqué sur la case de fermeture
 // indexAff : l'index du container
@@ -829,7 +833,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 		zoomOffset: -1
 	}).addTo(mymap);
 
-redimCarte();
+redimObjets();
 
 // zones : chargé dans le html par  <script src="zones.geojson"></script>
 inverseLatLon(zones);
@@ -898,7 +902,7 @@ lecteur();
 // Aussi dans le code :
 //     baliseFermer.addEventListener("click"
 
-window.onresize = redimCarte;
+window.onresize = redimObjets;
 
 // Evénement déplacement curseur de temps
 curseurTemps.oninput = curseurTempsMiseAJourVitalites;

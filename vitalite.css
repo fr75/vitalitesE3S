@@ -1,20 +1,35 @@
 
-body {
-    background: #ffe781;
-    width: 95%;
-    zzheight: 100%;
+:root {
+    --fond: #ffe781; /*  */
+    --fond-elts: #ecda8d;
+    --curseur: #c61515;
+    --marqueur-temps: #fae79b; /* La petite fenêtre dans laquelle est affiché le temps */
+    --graduation-heure: red;
+    --graduation-demiheure: red;
 }
-html, body {
+
+
+html {
     height: 95%;
     width: 99vw;
     zzheight: 400px;
+    zzposition: relative;
+}
+
+
+
+body {
+    background: var(--fond);
+    width: 99%;
+    position: absolute;
+    zzborder: 3px solid green;
+    min-height: 95%;
 }
 
 
 #mapid {
-    height: 80%;
-    height: 40%;
-    width: 90%;
+    height: 100px; /* Peu importe, recalculé dynamiquement */
+    width: 100%;
 
 }
 
@@ -31,7 +46,7 @@ html, body {
   appearance: none;
   width: 100%; /* Full-width */
   height: 25px; /* Specified height */
-  background: #ecda8d; /* Grey background */
+  background: var(--fond-elts); /* Grey background */
   outline: none; /* Remove outline */
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
@@ -49,14 +64,14 @@ html, body {
   appearance: none;
   width: 5px;
   height: 25px;
-  background: #c61515;
+  background: var(--curseur);
   cursor: pointer; /* Style */
 }
 
 .curseurTemps::-moz-range-thumb {
   width: 5px;
   height: 25px;
-  background: #c61515;
+  background: var(--curseur);
   cursor: pointer;
 }
 
@@ -68,7 +83,7 @@ html, body {
 	text-align: center;
 	width: 5%; // Surchargé dans le javascript
 	height: 1.5em;
-    background-color: #fae79b;
+    background-color: var(--marqueur-temps);
     zzleft: 100;
 }
 
@@ -89,7 +104,7 @@ html, body {
     display: inline-block;
     height: 30px;
     width: 1px;
-    border: 1px solid red;
+    border: 1px solid var(--graduation-heure);
     zzmargin-left: 20%;
     zzleft: 20%;
     /* RAPPEL IMPORTANT : pour que la position  ("absolute") de cet élément soit calculée à partif de son container indépendamment
@@ -103,7 +118,7 @@ html, body {
     display: inline-block;
     height: 10px;
     width: 1px;
-    border: 1px solid red;
+    border: 1px solid var(--graduation-demiheure);
     zzmargin-left: 20%;
     zzleft: 50%;
     /* RAPPEL IMPORTANT : pour que la position ("absolute") de cet élément soit calculée à partif de son container indépendamment
@@ -122,27 +137,49 @@ html, body {
 }
 
 
-.moyenneVitalitesContainer {
-    position: relative;
-    width: 100%;
-    background-color: #ecda8d;
-    zzborder: 1px solid red;
-}
+
 
 .indicateur {
-    display: none;
+    zzdisplay: none;
     position: relative; /* Relative : par rapport à la position qu'il devrait avoir */
     width: 15px;
     bottom: -10px;
     left: 0%;
 }
 
+.masquer {
+    display: none;
+}
+
+.moyenneVitalitesContainer {
+    position: relative;
+    width: 100%;
+    background-color: var(--fond-elts);
+    zzborder: 1px solid red;
+}
+
+#vitalite1ZoneContainer {
+    width: 100%;
+    background-color: var(--fond-elts);
+}
+
+#vitalite1ZoneContainer p {
+    display: inline-block;
+    width: 20%;
+    height: 20px;
+    background-color: var(--fond-elts);
+}
+
+#vitalite1ZoneContainer .fermer{
+    width: 15px;
+    display: inline !important;
+    padding-right: 10px;
+}
+
 .moyenneVitalitesContainer p {
     display: inline-block;
     width: 20%;
     height: 20px;
-    background-color: #eacd52;
-    zzborder: 1px solid red;
     padding-left: 0px;
     padding-right: 0px;
     margin-left:  0px;
@@ -151,24 +188,13 @@ html, body {
 
 
 
-.vitalite1ZoneContainer {
-    width: 100%;
-    background-color: #ecda8d;
-}
-
-.vitalite1ZoneContainer p {
-    display: inline-block;
-    width: 20%;
-    height: 20px;
-    background-color: #ecda8d;
-    border: 0px solid red;
-}
-
-
-
 #aide {
     position: absolute;
-    bottom: 5px;
+    bottom: -30px; /* Positionnement juste sous son container parent */
+    height: 30px;
+    zzborder: 1px solid var(--graduation-demiheure);
+    padding-top: 0;
+    padding-bottom: 10px;
 }
 
 #aide b {

@@ -14,8 +14,9 @@ import random as rd
 
 
 ZONES = {
-'LaValleePolygon', 'Lot C', 'Lot M', 'Lot F', 'Lot A', 'GS', 'Lot I', 'Lot E', 'Lot R', 'Lot K', 'Lot P', 'Polygon_13', 'Polygon_10', 'Lot G', 'Lot H', 'Lot L', 'Lot T', 'Lot S', 'Lot N', 'Lot O - LIDL', 'Lot J',
+'LaValleePolygonEnglobant', 'LOT A', 'LOT C', 'Lot D', 'Lot E', 'LOT CG', 'LOT F', 'LOT G', 'LOT GS', 'LOT H', 'LOT I', 'Lot J', 'Lot K', 'Lot L', 'Lot M', 'Lot N', 'Lot O - LIDL', 'Lot P', 'LOT R', 'LOT S', 'LOT T', 'Ferme Urbaine',
 }
+
 
 class Zone:
     def __init__(self, nom, heure, vitalite):

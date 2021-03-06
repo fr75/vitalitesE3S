@@ -14,7 +14,7 @@ Un lecteur permet un fonctionnement automatique.
 ## Fonctionnement
 La page charge 2 fichiers :
 
-* Une description des zones : *zones.json*
+* Une description des zones : *zones.geojson*
 * L'évolution de la vitalité de chaque zones au cours de la journée : *vitalites.json*
 
 ## Utilitaires

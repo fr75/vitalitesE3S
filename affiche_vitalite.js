@@ -240,8 +240,10 @@ function miseAJourAffichageVitalites(structHeure) {
 
 // ------------------------------------------------------
 // Met à jour l'affichage des vitalités en fonction de la position du curseur de temps
+// Met à jour le marqueur (position et valeur)
+// Marqueur Temps : la petite fenêtre dans laquelle s'affiche le temps.
 function curseurTempsMiseAJourVitalites(){
-    // Marqueur Temps : la petite fenêtre dans laquelle s'affiche le temps.
+
     var largMarqueur = 5; //en %
     var valCurseur = curseurTemps.value;
     // Position du marqueur : P
@@ -265,10 +267,16 @@ function curseurTempsMiseAJourVitalites(){
     marqueurTemps.style.position = "relative";
     var mnMin = convHeureVersMn(G_heuresV[0]['heure']['h']);
     var mnMax = convHeureVersMn(G_heuresV[G_heuresV.length - 1]['heure']['h']);
-    var mn = Math.floor(mnMin +  ((mnMax - mnMin)/G_maxCurseur) * valCurseur);
+    var mn = Math.floor(mnMin +  ((mnMax - mnMin)/(G_maxCurseur - 1)) * valCurseur);
     //console.log("mnMin = " +  mnMin);
+    // On se souvient que le curseur dépasse d'1 pas de temps la dernière valeur de vitalité.
+    // Alors on contraint la dernière valeur au max.
+    if (mn > mnMax) {
+        mn = mnMax;
+    }
     var hm = convMnVersHeure(mn);
     //console.log("Curseur : " + valCurseur + ", minutes = " + mn + ", heures = " + hm);
+
     // Les valeurs de vitalités :
     var vitalites = retVitalite(G_heuresV, hm)[1];
     if (vitalites != false) {
@@ -295,18 +303,20 @@ function ajouteGraduationsTemps(tabHeures) {
     // Objet donnant la position des graduations d'heure de demi-heure
     var grad = [];
     // Calcul de la position P sur le graphique en fonction du temps t
-    // La position prend les valeurs pm = pM (ici pm = 0, pM = 100%)
+    // La position prend les valeurs pm = pM (ici pm = 0, pM = 100% - 1 pas de mesure)
     // Le temps varie de tm à tM
     // P = a.t + b
     //     a = (pM - pm) / (tM - tm)
     //     b = pm - a.tm
-    var a = 100 / (mnMax-mnMin);
+    // pM = (100 - 100 / G_maxCurseur) car la position 100% dépasse la dernière mesure de vitalité d'1 pas de temps
+    var a = (100 - 100 / G_maxCurseur) / (mnMax - mnMin);
     var b = - a * mnMin;
     for (mn = mnMin ; mn <= mnMax ; mn++) {
         var position = mn * a + b;
         if (Math.floor(mn/60) == mn/60) {
             var h = {'heure': {'label': mn/60 + 'h', 'position': position}};
-            //console.log('grad heure pour mn = ' + mn + ", position : " + position);
+            // Malgré le petit décalage entre le curseur et la graduation, le calcul de la position est bon. Voir si ça vient des css
+            //console.log('grad heure pour mn = ' + mn + ", position (%): " + position);
             grad.push(h);
         }
         else if (Math.floor(mn/30) == mn/30) {
@@ -355,9 +365,10 @@ function ajouteGraduationsTemps(tabHeures) {
 }
 
 // ------------------------------------------------------
-// Positionnne l'indicateur de vitalité moyenne en fonction de la position du curseur de temps
+// Positionnne l'indicateur de vitalité  en fonction de la position du curseur de temps
 // L'indicateur est le petit doigt triangulaire au dessus de la ligne de zone
 // Arg : l'id du container ('moyenneVitalitesContainer', 'vitalite1ZoneContainer_0', 'vitalite1ZoneContainer_1', ...)
+// C'est le bord gauche de l'indicateur qui est à la bonne position. Il faudrait le décaler de la moitié de sa largeur.
 function majPositionIndicateur(idContainer) {
     // console.log("majPositionIndicateur container : " + idContainer);
     var valCurseur = curseurTemps.value ; // Le curseur de temps principal
@@ -420,7 +431,9 @@ function ajouteLigneVitalitesMoyennes(tabHeures) {
         //var texte = document.createTextNode(i);
         //balise.appendChild(texte);
         // Modification de la largeur de l'élement
-        balise.style.width = (100 / nbElts) + "%";
+        balise.style.width = (100 / (nbElts)) + "%";
+        balise.style.left = i * (100 / (nbElts)) + "%";
+        // console.log(balise.style.width);
         balise.style.backgroundColor = heatMapColorforValue(vitalite);
         // Ajout du nouvel élément
         moyenneVitalitesContainer.appendChild(balise);
@@ -465,6 +478,11 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
         var containerFils = document.createElement("div");
         containerFils.id = idContainerFils;
         containerFils.style.position = "relative";
+        containerFils.style.height = 120 + "px";
+        containerFils.style.marginTop = 5 + "px";
+        containerFils.style.backgroundColor = "var(--fond-elts)";
+        //containerFils.style.border =  "1px solid blue";
+
         containerFilsSuiv = document.getElementById("vitalite1ZoneContainer" + "_" + (indexAff + 1))
         if (containerFilsSuiv == undefined) {
             vitalitesContainer1Zone.appendChild(containerFils);
@@ -503,7 +521,9 @@ function afficheLigneVitalites1Zone(lzones, tabHeures, _leaflet_id, indexAff) {
             //var texte = document.createTextNode(i);
             //balise.appendChild(texte);
             // Modification de la largeur de l'élement
-            balise.style.width = (100 / nbElts) + "%";
+            balise.style.position = "absolute";
+            balise.style.width = (100 / (nbElts)) + "%";
+            balise.style.left = i * (100 / (nbElts)) + "%";
             balise.style.backgroundColor = heatMapColorforValue(vitalite);
             // Ajout du nouvel élément
             containerFils.appendChild(balise);
@@ -665,7 +685,7 @@ async function lecteur() {
         }
         else if (etat_lecteur == "demarre") {
             //console.log("** demarre");
-            if (curseurTemps.value == G_maxCurseur) {
+            if (curseurTemps.value == (G_maxCurseur - 1)) {
                 if (mode_lecteur == "unique") {
                     etat_lecteur = "arrete";
                     console.log("lecteur : Passage auto en état 'arrêté' à la fin de la simulation");
@@ -878,9 +898,11 @@ var curseurTemps = document.getElementById("curseurTemps");
 
 var marqueurTemps = document.getElementById("marqueurTemps");
 remplitTabHeuresChangementsVitalite(G_heuresV);
-G_maxCurseur = G_heuresV.length - 1 ;
-curseurTemps.max = G_heuresV.length - 1;
-// console.log(curseurTemps.max);
+// Comme le curseur prend les valeurs 0 à G_maxCurseur,
+// il dépasse la dernière valeur de vitalité d'un pas de temps
+G_maxCurseur = G_heuresV.length;
+curseurTemps.max = G_heuresV.length;
+console.log("G_maxCurseur = " + G_maxCurseur);
 
 
 

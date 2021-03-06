@@ -93,7 +93,7 @@ body {
     /* IMPORTANT : Pour que le positionnement de chaque élément du container soit calculé à partir de ce container,
     il faut que celui-ci ait un positionnnement "relative" */
     position: relative;
-    zzwidth: 100%;
+    width: 100%;
     height: 50px;
     border: 1px solid black;
     padding-top: 0px;
@@ -154,13 +154,19 @@ body {
 .moyenneVitalitesContainer {
     position: relative;
     width: 100%;
+    height: 120px;
     background-color: var(--fond-elts);
+    margin-top: 5px;
     zzborder: 1px solid red;
+    zzdisplay: none;
+}
+.moyenneVitalitesContainer p {
+    position: absolute;
 }
 
 #vitalite1ZoneContainer {
     width: 100%;
-    background-color: var(--fond-elts);
+    zzbackground-color: var(--fond-elts);
 }
 
 #vitalite1ZoneContainer p {
@@ -185,6 +191,7 @@ body {
     margin-left:  0px;
     margin-right: 0px;
 }
+
 
 
 

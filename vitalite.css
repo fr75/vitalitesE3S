@@ -36,43 +36,61 @@ body {
 
 
 .curseurTempsContainer {
-  width: 100%; /* Width of the outside container */
-  position: relative;
+    width: 100%;
+    position: relative;
+    height: 80px;
+    zzborder: 1px solid blue;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 /* The slider itself */
 .curseurTemps {
-  -webkit-appearance: none;  /* Override default CSS styles */
-  appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: var(--fond-elts); /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-  transition: opacity .2s;
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: var(--fond-elts); /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
 }
 
 /* Mouse-over effects */
 .curseurTemps:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+    opacity: 1; /* Fully shown on mouse-over */
 }
 
 /* Le doigt du curseur ( -webkit- (Chrome, Opera, Safari, Edge) et -moz- (Firefox) ) */
 .curseurTemps::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 5px;
-  height: 25px;
-  background: var(--curseur);
-  cursor: pointer; /* Style */
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 40px;
+    height: 25px;
+    background: var(--curseur);
+    border-radius: 5px 5px / 5px 5px;
+    cursor: pointer; /* Style */
 }
 
 .curseurTemps::-moz-range-thumb {
-  width: 5px;
-  height: 25px;
-  background: var(--curseur);
-  cursor: pointer;
+    width: 40px;
+    height: 25px;
+    background: var(--curseur);
+    zzborder: 1px solid blue;
+    cursor: pointer;
+}
+
+
+#indicateurCurseurTemps {
+    position: absolute;
+    zzwidth: 5%;
+    height: 30px;
+    background: blue;
+    top: -30px;
+    zzleft: 20%;
 }
 
 .marqueurTemps {
@@ -95,15 +113,21 @@ body {
     position: relative;
     width: 100%;
     height: 50px;
-    border: 1px solid black;
+    zzborder: 1px solid black;
     padding-top: 0px;
     padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+    /* Les graduations sont décalées vers la droite d'1px et je ne vois pas pourquoi. (Chrome et Firefox)
+      Alors on décale de -1px pour compenser */
+    margin-left: -1px;
 }
 
 .graduationsTempsContainer p.heure {
     display: inline-block;
     height: 30px;
-    width: 1px;
+    zzwidth: 1px;
     border: 1px solid var(--graduation-heure);
     zzmargin-left: 20%;
     zzleft: 20%;
@@ -112,12 +136,14 @@ body {
     position: absolute;
     margin-bottom: 1px;
     bottom: 0px;
+    padding-left: 0px;
+    margin-left: 0px;
 }
 
 .graduationsTempsContainer p.demiHeure {
     display: inline-block;
     height: 10px;
-    width: 1px;
+    zzwidth: 1px;
     border: 1px solid var(--graduation-demiheure);
     zzmargin-left: 20%;
     zzleft: 50%;
@@ -127,6 +153,8 @@ body {
     margin-bottom: 1px;
     bottom: 0px;
     zzpadding-bottom: -20px;
+    padding-left: 0px;
+    margin-left: 0px;
 }
 
 .graduationsTempsContainer span {

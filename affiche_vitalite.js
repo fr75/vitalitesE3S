@@ -243,7 +243,6 @@ function miseAJourAffichageVitalites(structHeure) {
 // Met à jour le marqueur (position et valeur)
 // Marqueur Temps : la petite fenêtre dans laquelle s'affiche le temps.
 function curseurTempsMiseAJourVitalites(){
-
     var largMarqueur = 5; //en %
     var valCurseur = curseurTemps.value;
     // Position du marqueur : P
@@ -291,6 +290,7 @@ function curseurTempsMiseAJourVitalites(){
     //marqueurTemps.textContent = convHeureVersCh(hm);
 
     // Mise à jour des indicateurs
+    majPositionIndicateurCurseurTemps();
     majPositionIndicateur("moyenneVitalitesContainer");
     majPositionIndicateursZones();
 }
@@ -335,7 +335,20 @@ function ajouteGraduationsTemps(tabHeures) {
         if (v['heure'] != undefined) {
             var baliseP = document.createElement("p");
             baliseP.className = "heure";
-            baliseP.style.left = v['heure']['position'] + '%';
+            var position = v['heure']['position']; // en %
+            // C'est le bord gauche du curseur qui est à cette position, pas son milieu. On corrige la position
+            var largGraduation = 0.2 ; // en %
+            baliseP.style.width = largGraduation + '%';
+            var positionRectifiee = position - largGraduation/2;
+            var positionBordGauche = positionRectifiee - largGraduation/2;
+            var positionBordDroit = positionRectifiee + largGraduation;
+            if (positionBordGauche < 0){
+            } else if (positionBordDroit > 100) {
+                position = positionRectifiée;
+            } else {
+                position = positionRectifiee;
+            }
+            baliseP.style.left = position + '%';
             var baliseSpan = document.createElement("span");
             var label = document.createTextNode(v['heure']['label']);
             //var label = document.createTextNode('x');
@@ -351,7 +364,20 @@ function ajouteGraduationsTemps(tabHeures) {
         if (v['demiHeure'] != undefined) {
             var baliseP = document.createElement("p");
             baliseP.className = "demiHeure";
-            baliseP.style.left = v['demiHeure']['position'] + '%';
+            var position = v['demiHeure']['position']; // en %
+            // C'est le bord gauche du curseur qui est à cette position, pas son milieu. On corrige la position
+            var largGraduation = 0.2 ; // en %
+            baliseP.style.width = largGraduation + '%';
+            var positionRectifiee = position - largGraduation/2;
+            var positionBordGauche = positionRectifiee - largGraduation/2;
+            var positionBordDroit = positionRectifiee + largGraduation;
+            if (positionBordGauche < 0){
+            } else if (positionBordDroit > 100) {
+                position = positionRectifiée;
+            } else {
+                position = positionRectifiee;
+            }
+            baliseP.style.left = position + '%';
             //baliseP.style.position = "relative";
             var baliseSpan = document.createElement("span");
             var label = document.createTextNode(v['demiHeure']['label']);
@@ -363,6 +389,35 @@ function ajouteGraduationsTemps(tabHeures) {
 
     }
 }
+
+// ------------------------------------------------------
+// Le curseur de l'élément input type="range  n'a pas un déplacement linéaire :
+// Tout à gauche c'est son bord gauche qui est à la position 0%,
+// tout à droite c'est son bord droit qui est à la position 100%
+// Alors on rajoute cet indicateur, précis, qui se superpose aux graduations.
+// On pourrait aussi décaler les graduations, mais si le curseur est large, le pas variable entre les graduations risque d'être visible.
+// Et pourquoi les décaler ? Elles n'y sont pour rien !
+function majPositionIndicateurCurseurTemps() {
+    var valCurseur = curseurTemps.value ; // Le curseur de temps principal
+    var indicateurCurseurTemps = document.getElementById('indicateurCurseurTemps');
+    var position = (100 / G_maxCurseur) *  valCurseur; // en %
+    // C'est le bord gauche du curseur qui est à cette position, pas son milieu. On corrige la position
+    var largCurseur = 0.2 ; // en %
+    var positionRectifiee = position - largCurseur/2;
+    var positionBordGauche = positionRectifiee - largCurseur/2;
+    var positionBordDroit = positionRectifiee + largCurseur;
+    console.log("Position bord gauche (%) : " +  positionBordGauche + ", bord droit : " + positionBordDroit);
+    if (positionBordGauche < 0){
+        indicateurCurseurTemps.style.width = 2 + "px";
+    } else if (positionBordDroit > 100) {
+        indicateurCurseurTemps.style.width = 2 + "px";
+    } else {
+        position = positionRectifiee;
+        indicateurCurseurTemps.style.width = largCurseur + '%';
+    }
+    indicateurCurseurTemps.style.left = position + "%";
+}
+
 
 // ------------------------------------------------------
 // Positionnne l'indicateur de vitalité  en fonction de la position du curseur de temps
@@ -913,6 +968,7 @@ curseurTempsMiseAJourVitalites();
 ajouteLigneVitalitesMoyennes(G_heuresV);
 
 majPositionIndicateur("moyenneVitalitesContainer");
+majPositionIndicateurCurseurTemps();
 
 
 ajouteGraduationsTemps(G_heuresV);

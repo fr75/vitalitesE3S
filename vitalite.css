@@ -88,7 +88,7 @@ body {
     position: absolute;
     zzwidth: 5%;
     height: 30px;
-    background: blue;
+    background: var(--curseur);
     top: -30px;
     zzleft: 20%;
 }

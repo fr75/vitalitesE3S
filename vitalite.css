@@ -2,7 +2,9 @@
 :root {
     --fond: #ffe781; /*  */
     --fond-elts: #ecda8d;
-    --curseur: #c61515;
+    --curseur-bordure: #c61515;
+    --curseur-fond: #eacbcb;
+    --indicateur-curseur-temps-fond: var(--curseur-bordure);
     --marqueur-temps: #fae79b; /* La petite fenêtre dans laquelle est affiché le temps */
     --graduation-heure: red;
     --graduation-demiheure: red;
@@ -78,8 +80,9 @@ body {
 .curseurTemps::-moz-range-thumb {
     width: 40px;
     height: 25px;
-    background: var(--curseur);
-    zzborder: 1px solid blue;
+    zzbackground: var(--curseur);
+    background: var(--curseur-fond);
+    border: 1px solid var(--curseur-bordure);
     cursor: pointer;
 }
 
@@ -88,7 +91,7 @@ body {
     position: absolute;
     zzwidth: 5%;
     height: 30px;
-    background: var(--curseur);
+    background: var(--indicateur-curseur-temps-fond);
     top: -30px;
     zzleft: 20%;
 }

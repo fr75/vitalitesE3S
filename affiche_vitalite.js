@@ -402,7 +402,7 @@ function majPositionIndicateurCurseurTemps() {
     var indicateurCurseurTemps = document.getElementById('indicateurCurseurTemps');
     var position = (100 / G_maxCurseur) *  valCurseur; // en %
     // C'est le bord gauche du curseur qui est à cette position, pas son milieu. On corrige la position
-    var largCurseur = 0.2 ; // en %
+    var largCurseur = 0.4 ; // en %
     var positionRectifiee = position - largCurseur/2;
     var positionBordGauche = positionRectifiee - largCurseur/2;
     var positionBordDroit = positionRectifiee + largCurseur;

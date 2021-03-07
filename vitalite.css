@@ -74,6 +74,7 @@ body {
     height: 25px;
     background: var(--curseur);
     border-radius: 5px 5px / 5px 5px;
+    border: 1px solid var(--curseur-bordure);
     cursor: pointer; /* Style */
 }
 
@@ -86,13 +87,23 @@ body {
     cursor: pointer;
 }
 
+.curseurTemps::-ms-thumb {
+    width: 40px;
+    height: 25px;
+    zzbackground: var(--curseur);
+    background: var(--curseur-fond);
+    border: 1px solid var(--curseur-bordure);
+    cursor: pointer;
+}
+
 
 #indicateurCurseurTemps {
     position: absolute;
     zzwidth: 5%;
-    height: 30px;
+    height: 28px;
     background: var(--indicateur-curseur-temps-fond);
-    top: -30px;
+    border-radius: 2px 2px / 2px 2px;
+    top: -28px;
     zzleft: 20%;
 }
 

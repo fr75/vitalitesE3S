@@ -406,7 +406,7 @@ function majPositionIndicateurCurseurTemps() {
     var positionRectifiee = position - largCurseur/2;
     var positionBordGauche = positionRectifiee - largCurseur/2;
     var positionBordDroit = positionRectifiee + largCurseur;
-    console.log("Position bord gauche (%) : " +  positionBordGauche + ", bord droit : " + positionBordDroit);
+    // console.log("Position bord gauche (%) : " +  positionBordGauche + ", bord droit : " + positionBordDroit);
     if (positionBordGauche < 0){
         indicateurCurseurTemps.style.width = 2 + "px";
     } else if (positionBordDroit > 100) {

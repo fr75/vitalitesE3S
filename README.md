@@ -21,7 +21,7 @@ La page charge 2 fichiers :
 ### Convertir kml en zones.geojson
 Exécuter *conv_zones_kml_vers_geojson.py* (python 3).
 
-Si les zones ont changées, la dernière ligne déffichage : zones = ... est à recopier en haut de *generateur_vitalites.py*
+Si les zones ont changées, la dernière ligne d'affichage : zones = ... est à recopier en haut de *generateur_vitalites.py*
 
 ### Générer des vitalités aléatoires
 Exécuter *generateur_vitalites.py* (python 3)

@@ -767,6 +767,50 @@ async function lecteur() {
 // ***********
 
 
+
+// ------------------------------------------------------
+// Affiche ou masque le nom des zones.
+// Si sel = 'permanent', le nom des zones est constamment affiché
+// Si sel = 'survol', affichage seulement lors du survol de la zone par la souris
+function afficherNomZones(sel) {
+    // S'ils existent, suppression des tootip liés à une zone (ce sont les marqueurs)
+    mymap.eachLayer(
+        function(layer) {
+            //console.log(layer);
+            if (layer._tooltip != undefined) {
+                var _leaflet_id_zone = layer._leaflet_id;
+                // Recherche des tooltip liées à une zone, our les supprimer
+                if ((_leaflet_id_zone != undefined) &&
+                    (retNomZone(lzones, _leaflet_id_zone) != false) ) {
+                        //console.log("supprime");
+                        tooltip = layer.getTooltip();
+                        //tooltip.removeFrom(mymap);
+                        layer.unbindTooltip();
+                }
+            }
+        }
+    ); // mymap.eachLayer
+
+    // Création des tooltip, avec les bonnes propriétés
+    lzones.forEach(
+        function (zone) {
+                nom = zone.get('nom');
+                if (sel == 'permanent') {
+                    //console.log("permanent");
+                    zone.get('lp').bindTooltip(nom, {permanent: true});
+                }
+                else if (sel == 'survol') {
+                    //console.log("survol");
+                    zone.get('lp').bindTooltip(nom, {permanent: false});
+                }
+                else {
+                    console.log("!!! ERREUR afficherNomZones(sel), Valeur de sélecteur invalide : " + sel);
+                }
+            }
+        ) // lzones.forEach
+}
+
+
 // *********** Contrôles d'événements divers
 
 // ------------------------------------------------------
@@ -836,6 +880,19 @@ function clavierDown(e) {
         tempo_lecteur = Math.floor(tempo_lecteur / 1.5);
         console.log("lecteur : tempo diminuée : " + tempo_lecteur);
     }
+
+    if ((touche == 'z') || (touche == 'Z')) {
+        if (etat_affichage_zones == "survol") {
+            console.log("Affiche le nom des zones");
+            etat_affichage_zones = "permanent";
+            afficherNomZones(etat_affichage_zones);
+        }
+        else if (etat_affichage_zones == "permanent") {
+            console.log("Masque le nom des zones. Affichage limité au survol");
+            etat_affichage_zones = "survol";
+            afficherNomZones(etat_affichage_zones);
+        }
+    } // if ((touche == 'z')
 }
 
 // ------------------------------------------------------
@@ -896,6 +953,7 @@ function onCarteZoomMoins(e) {
     document.getElementById("mapid").blur();
 }
 
+
 // ============================================================================
 //                  FIN DES FONCTIONS
 // ============================================================================
@@ -937,7 +995,10 @@ zones.features.forEach(
         lzone.set('nom', nom);
         // 'lp' : leaflet polygone
         lzone.set('lp', L.polygon(zone.geometry.coordinates[0]));
-        lzone.get('lp').bindTooltip("Zone : " + nom);
+        // if (nom != "LaValleePolygonEnglobant") {
+        //     lzone.get('lp').bindTooltip("Zone : " + nom);
+        // }
+
         // Événement clic dans le polygone
         lzone.get('lp').on('click', function(e){onPolygonClick(e)});
         lzone.get('lp').addTo(mymap);
@@ -946,8 +1007,23 @@ zones.features.forEach(
         lzone.set('_leaflet_id', lzone.get('lp')._leaflet_id); // N'est dispo qu'après addTo()
         // Ajout de l'objet lzone au tableau lzones
         lzones.set(nom, lzone);
+        // if (nom == "LOT A") {
+        //     centre = lzone.get('lp').getBounds().getCenter();
+        //     console.log(centre);
+        //     centre = lzone.get('lp').bindTooltip("TEST").openTooltip().getCenter();
+        //     console.log(centre);
+        //     //centre2 = lzone.get('lp').bindTooltip("Zone : " + nom);
+        //     lat = centre.lat;
+        //     lon = centre.lng;
+        //     var marker = new L.marker(centre, { opacity: 0.01 }); //opacity may be set to zero
+        //     marker.bindTooltip("My Label", {permanent: true, className: "my-label", offset: [0, 0] });
+        //     marker.addTo(mymap);
+        //
+        // }
+
     }
-)
+);
+
 
 var curseurTemps = document.getElementById("curseurTemps");
 
@@ -973,6 +1049,10 @@ majPositionIndicateurCurseurTemps();
 
 ajouteGraduationsTemps(G_heuresV);
 
+// L'affichage du nom des zones
+var etat_affichage_zones = "survol";
+etat_affichage_zones = "permanent";
+afficherNomZones(etat_affichage_zones);
 
 // Le lecteur
 // ===========

@@ -79,12 +79,11 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
 
         if name == 'Placemark':
             self.contexte = 'None'
-            print("Contexte = " + self.contexte)
+            #print("Contexte = " + self.contexte)
 
         if name == 'name':
             if self.contexte == "Placemark":
                 self.nomP = self.txtHorsBalise
-                self.listeZones += "'{}', ".format(self.nomP)
                 #print("Contexte = " + self.contexte + ", nom = " + self.nomP)
 
         elif name == 'coordinates':
@@ -98,7 +97,14 @@ class XmlHandler(ContentHandler, ErrorHandler, SAXException):
                 if m is not None:
                     #print("Ajout des coordonnées : lon =  {}, lat = {}".format(m[1], m[2]))
                     polygone.ajoutPoint(m[2], m[1])
-            self.polygones.append(polygone)
+
+
+            if polygone.nbPoints > 0 :
+                print("Polygone : {}, nb points : {}.".format(polygone.nom, polygone.nbPoints))
+                self.polygones.append(polygone)
+                self.listeZones += "'{}', ".format(polygone.nom)
+            else :
+                print("Polygone : {}, nb points : {}. !! Sauté car coord ne correspondent pas au filtre d'extraction".format(polygone.nom, polygone.nbPoints))
         else:
             pass
 

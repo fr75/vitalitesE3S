@@ -14,7 +14,7 @@ import random as rd
 
 
 ZONES = {
-'LaValleePolygonEnglobant', 'LOT A', 'LOT C', 'Lot D', 'Lot E', 'LOT CG', 'LOT F', 'LOT G', 'LOT GS', 'LOT H', 'LOT I', 'Lot J', 'Lot K', 'Lot L', 'Lot M', 'Lot N', 'Lot O - LIDL', 'Lot P', 'LOT R', 'LOT S', 'LOT T', 'Ferme Urbaine',
+'LOT A', 'LOT C', 'Lot D', 'Lot E', 'LOT CG', 'LOT F', 'LOT G', 'LOT GS', 'LOT H', 'LOT I', 'Lot J', 'Lot K', 'Lot L', 'Lot M', 'Lot N', 'Lot O - LIDL', 'Lot P', 'LOT R', 'LOT S', 'LOT T', 'Ferme Urbaine',
 }
 
 

@@ -6,18 +6,6 @@ zones = {
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
-                    []
-                ]
-            },
-            "properties": {
-                "nom": "LaValleePolygonEnglobant"
-            }
-        },
-        {
-            "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
                     [
                         [
                             2.28726480895937,

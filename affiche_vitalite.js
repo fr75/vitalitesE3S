@@ -1051,7 +1051,7 @@ ajouteGraduationsTemps(G_heuresV);
 
 // L'affichage du nom des zones
 var etat_affichage_zones = "survol";
-etat_affichage_zones = "permanent";
+
 afficherNomZones(etat_affichage_zones);
 
 // Le lecteur
